@@ -5,6 +5,7 @@ import LoginForm from "../components/LoginForm";
 import ForgotPasswordForm from "../components/ForgotPasswordForm";
 import VerificationForm from "../components/VerificationForm";
 import SetNewPasswordForm from "../components/SetNewPasswordForm";
+import Dashboard from "../components/Dashboard";
 
 const router = createBrowserRouter([
   {
@@ -28,8 +29,12 @@ const router = createBrowserRouter([
         element: <VerificationForm />,
       },
       {
-        path: "set-new-password-form ",
+        path: "set-new-password-form",
         element: <SetNewPasswordForm />,
+      },
+      {
+        path: "dashboard",
+        element: <Dashboard/>,
       },
     ],
   },
