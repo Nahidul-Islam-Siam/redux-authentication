@@ -1,75 +1,112 @@
-import { useState } from "react";
-import { AiOutlineEye, AiOutlineEyeInvisible } from "react-icons/ai";
+import  { useState } from 'react';
 
-export default function SignupForm() {
+const SignUpForm = () => {
   const [formData, setFormData] = useState({
-    name: "",
-    email: "",
-    phone: "",
-    password: "",
-    confirmPassword: ""
+    fullName: '',
+    email: '',
+    phone: '',
+    password: '',
+    confirmPassword: '',
   });
-  const [showPassword, setShowPassword] = useState(false);
-  const [showConfirmPassword, setShowConfirmPassword] = useState(false);
 
   const handleChange = (e) => {
     setFormData({ ...formData, [e.target.name]: e.target.value });
   };
 
-return (
-    <div className="flex justify-center items-center min-h-screen bg-gray-100">
-        <div className="bg-white p-8 rounded-2xl shadow-lg w-96">
-            <h2 className="text-2xl font-semibold text-center">Sign Up to your account</h2>
-            <p className="text-gray-500 text-center text-sm mb-6">Please enter your personal data</p>
-            
-            <div className="space-y-4">
-                <input name="name" type="text" placeholder="Enter your name" className="w-full p-2 border rounded" value={formData.name} onChange={handleChange} />
-                <input name="email" type="email" placeholder="Enter your email" className="w-full p-2 border rounded" value={formData.email} onChange={handleChange} />
-                <input name="phone" type="tel" placeholder="Enter your phone no" className="w-full p-2 border rounded" value={formData.phone} onChange={handleChange} />
-                
-                <div className="relative">
-                    <input
-                        name="password"
-                        type={showPassword ? "text" : "password"}
-                        placeholder="Password"
-                        className="w-full p-2 border rounded"
-                        value={formData.password}
-                        onChange={handleChange}
-                    />
-                    <button
-                        type="button"
-                        onClick={() => setShowPassword(!showPassword)}
-                        className="absolute right-3 top-1/2 transform -translate-y-1/2"
-                    >
-                        {showPassword ? <AiOutlineEyeInvisible size={20} /> : <AiOutlineEye size={20} />}
-                    </button>
-                </div>
+  const handleSubmit = (e) => {
+    e.preventDefault();
+    // Handle form submission here (e.g., send data to API)
+    console.log(formData);
+  };
 
-                <div className="relative">
-                    <input
-                        name="confirmPassword"
-                        type={showConfirmPassword ? "text" : "password"}
-                        placeholder="Confirm Password"
-                        className="w-full p-2 border rounded"
-                        value={formData.confirmPassword}
-                        onChange={handleChange}
-                    />
-                    <button
-                        type="button"
-                        onClick={() => setShowConfirmPassword(!showConfirmPassword)}
-                        className="absolute right-3 top-1/2 transform -translate-y-1/2"
-                    >
-                        {showConfirmPassword ? <AiOutlineEyeInvisible size={20} /> : <AiOutlineEye size={20} />}
-                    </button>
-                </div>
+  return (
+    <div className="flex justify-center items-center h-screen bg-gray-100">
+      <div className="bg-white p-8 rounded-lg shadow-md w-96">
+        <h2 className="text-2xl font-bold mb-4 text-center">Sing Up to your account</h2>
+        <p className="text-gray-600 mb-6 text-center">Please Enter Your Personal Data</p>
 
-                <button className="w-full bg-pink-500 hover:bg-pink-600 text-white py-2 rounded">Sign Up</button>
-                
-                <p className="text-center text-sm text-gray-600">
-                    Have any account? <a href="/login" className="text-pink-500 font-semibold">Log in</a>
-                </p>
-            </div>
-        </div>
+        <form onSubmit={handleSubmit}>
+          <div className="mb-4">
+            <label htmlFor="fullName" className="block text-gray-700 font-bold mb-2">Full Name</label>
+            <input 
+              type="text" 
+              id="fullName" 
+              name="fullName" 
+              value={formData.fullName} 
+              onChange={handleChange} 
+              className="border border-gray-300 rounded-md px-4 py-2 w-full focus:outline-none focus:ring-2 focus:ring-blue-500" 
+              placeholder="Enter your name" 
+              required
+            />
+          </div>
+
+          <div className="mb-4">
+            <label htmlFor="email" className="block text-gray-700 font-bold mb-2">Email</label>
+            <input 
+              type="email" 
+              id="email" 
+              name="email" 
+              value={formData.email} 
+              onChange={handleChange} 
+              className="border border-gray-300 rounded-md px-4 py-2 w-full focus:outline-none focus:ring-2 focus:ring-blue-500" 
+              placeholder="Enter your email" 
+              required
+            />
+          </div>
+
+          <div className="mb-4">
+            <label htmlFor="phone" className="block text-gray-700 font-bold mb-2">Phone Number</label>
+            <input 
+              type="tel" 
+              id="phone" 
+              name="phone" 
+              value={formData.phone} 
+              onChange={handleChange} 
+              className="border border-gray-300 rounded-md px-4 py-2 w-full focus:outline-none focus:ring-2 focus:ring-blue-500" 
+              placeholder="Enter your phone number" 
+              required
+            />
+          </div>
+
+          <div className="mb-4">
+            <label htmlFor="password" className="block text-gray-700 font-bold mb-2">Password</label>
+            <input 
+              type="password" 
+              id="password" 
+              name="password" 
+              value={formData.password} 
+              onChange={handleChange} 
+              className="border border-gray-300 rounded-md px-4 py-2 w-full focus:outline-none focus:ring-2 focus:ring-blue-500" 
+              placeholder="Enter your password" 
+              required
+            />
+          </div>
+
+          <div className="mb-6">
+            <label htmlFor="confirmPassword" className="block text-gray-700 font-bold mb-2">Confirm Password</label>
+            <input 
+              type="password" 
+              id="confirmPassword" 
+              name="confirmPassword" 
+              value={formData.confirmPassword} 
+              onChange={handleChange} 
+              className="border border-gray-300 rounded-md px-4 py-2 w-full focus:outline-none focus:ring-2 focus:ring-blue-500" 
+              placeholder="Confirm password" 
+              required
+            />
+          </div>
+
+          <button type="submit" className="bg-pink-500 hover:bg-pink-700 text-white font-bold py-2 px-4 rounded-md w-full focus:outline-none focus:ring-2 focus:ring-pink-300">
+            Sing up
+          </button>
+
+          <p className="mt-4 text-center text-gray-600">
+            Have any account? <a href="/login" className="text-pink-500 hover:underline">Log in</a>
+          </p>
+        </form>
+      </div>
     </div>
-);
-}
+  );
+};
+
+export default SignUpForm
