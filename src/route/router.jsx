@@ -3,6 +3,8 @@ import App from "../App";
 import SignupForm from "../components/SignUp";
 import LoginForm from "../components/LoginForm";
 import ForgotPasswordForm from "../components/ForgotPasswordForm";
+import VerificationForm from "../components/VerificationForm";
+import SetNewPasswordForm from "../components/SetNewPasswordForm";
 
 const router = createBrowserRouter([
   {
@@ -14,13 +16,21 @@ const router = createBrowserRouter([
         element: <SignupForm />,
       },
       {
-   path:"login" ,
+        path: "login",
         element: <LoginForm />,
       },
       {
-        path:"forgot-password" ,
-             element: <ForgotPasswordForm />,
-           },
+        path: "forgot-password",
+        element: <ForgotPasswordForm />,
+      },
+      {
+        path: "verification-form",
+        element: <VerificationForm />,
+      },
+      {
+        path: "set-new-password-form ",
+        element: <SetNewPasswordForm />,
+      },
     ],
   },
 ]);
