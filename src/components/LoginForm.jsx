@@ -1,4 +1,4 @@
-import  { useState } from 'react';
+import { useState } from 'react';
 import { FaEye, FaEyeSlash } from 'react-icons/fa';
 
 const LoginForm = () => {
@@ -55,6 +55,7 @@ const LoginForm = () => {
                 type="button"
                 onClick={togglePasswordVisibility}
                 className="absolute inset-y-0 right-0 px-3 flex items-center"
+                aria-label={showPassword ? "Hide password" : "Show password"}
               >
                 {showPassword ? (
                   <FaEye className="h-5 w-5 text-gray-500" />
@@ -65,15 +66,23 @@ const LoginForm = () => {
             </div>
           </div>
 
-          <div className="mb-6 flex items-center">
-            <input
-              type="checkbox"
-              id="rememberMe"
-              className="mr-2"
-              checked={rememberMe}
-              onChange={(e) => setRememberMe(e.target.checked)}
-            />
-            <label htmlFor="rememberMe" className="text-gray-700">Remember Password</label>
+          <div className="flex justify-between items-center mb-6">
+            <div className="flex items-center">
+              <input
+                type="checkbox"
+                id="rememberMe"
+                className="mr-2"
+                checked={rememberMe}
+                onChange={(e) => setRememberMe(e.target.checked)}
+                aria-label="Remember me"
+              />
+              <label htmlFor="rememberMe" className="text-gray-700">Remember me</label>
+            </div>
+            <div className="flex items-center">
+              <a href="/forgot-password" className="text-pink-500 hover:underline text-sm">
+                Forgot password?
+              </a>
+            </div>
           </div>
 
           <div className="mb-6">
@@ -87,7 +96,7 @@ const LoginForm = () => {
 
           <div className="text-center">
             <p className="text-gray-600">
-              Create account? <a href="/" className="text-pink-500 hover:underline">Sign Up</a>
+              Don&apos;t have an account? <a href="/" className="text-pink-500 hover:underline">Sign Up</a>
             </p>
           </div>
         </form>

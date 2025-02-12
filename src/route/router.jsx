@@ -2,6 +2,7 @@ import { createBrowserRouter } from "react-router-dom";
 import App from "../App";
 import SignupForm from "../components/SignUp";
 import LoginForm from "../components/LoginForm";
+import ForgotPasswordForm from "../components/ForgotPasswordForm";
 
 const router = createBrowserRouter([
   {
@@ -16,6 +17,10 @@ const router = createBrowserRouter([
    path:"login" ,
         element: <LoginForm />,
       },
+      {
+        path:"forgot-password" ,
+             element: <ForgotPasswordForm />,
+           },
     ],
   },
 ]);
