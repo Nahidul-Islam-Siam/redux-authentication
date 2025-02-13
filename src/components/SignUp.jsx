@@ -1,5 +1,6 @@
 import { useState } from "react";
 import { AiOutlineEye, AiOutlineEyeInvisible } from "react-icons/ai";
+import { useRegisterUserMutation } from "../redux/api/auth/authApi";
 
 
 const SignUpForm = () => {
@@ -11,11 +12,19 @@ const SignUpForm = () => {
     confirmPassword: "",
   });
 
+
+  // Use the registerUser mutation from authApi
+  const [registerUser, { isLoading, error }] = useRegisterUserMutation();
+
   const [showPassword, setShowPassword] = useState(false);
   const [showConfirmPassword, setShowConfirmPassword] = useState(false);
 
 
    // Use the mutation hook from RTK Query
+
+  // const handleChange = (e) => {
+  //   setFormData({ ...formData, [e.target.name]: e.target.value });
+  // };
 
   const handleChange = (e) => {
     setFormData({ ...formData, [e.target.name]: e.target.value });
@@ -30,7 +39,22 @@ const SignUpForm = () => {
       return;
     }
 
-   
+    try {
+      // Make the API call via RTK Query's mutation
+      const response = await registerUser(formData).unwrap();
+      console.log("User Registered:", response);
+
+      // Handle successful registration
+      if (response.accessToken) {
+        localStorage.setItem("accessToken", response.accessToken); // Store the access token
+        alert("Registration successful!");
+      } else {
+        alert("Registration failed. No access token returned.");
+      }
+    } catch (err) {
+      console.error("Error during registration:", err);
+      alert(`Registration failed. Reason: ${err?.data?.message || "Please try again."}`);
+    }
   };
 
   return (
@@ -131,9 +155,17 @@ const SignUpForm = () => {
           <button
             type="submit"
             className="bg-pink-500 hover:bg-pink-700 text-white font-bold py-2 px-4 rounded-md w-full focus:outline-none focus:ring-2 focus:ring-pink-300"
+            disabled={isLoading}
           >
             Sign Up
           </button>
+
+          {error && (
+            <div className="mt-4 text-red-600 text-center">
+              {error?.data?.message || "Something went wrong. Please try again."}
+            </div>
+          )}
+
 
           <p className="mt-4 text-center text-gray-600">
             Have an account? <a href="/login" className="text-pink-500 hover:underline">Log in</a>
