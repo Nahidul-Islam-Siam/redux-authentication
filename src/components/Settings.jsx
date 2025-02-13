@@ -4,6 +4,10 @@ import { Tab, Tabs, TabList, TabPanel } from "react-tabs";
 import { useNavigate, useParams } from "react-router-dom";
 import "react-tabs/style/react-tabs.css";
 
+
+import { AiOutlineEye, AiOutlineEyeInvisible } from "react-icons/ai";
+
+
 // ✅ Profile Header Component (Shows User Info)
 const ProfileHeader = ({ name }) => (
   <div className="bg-pink-500 p-6 rounded-lg text-white text-center">
@@ -55,36 +59,85 @@ EditProfile.propTypes = {
 };
 
 // ✅ Change Password Tab Content
-const ChangePassword = () => (
-  <div>
-    <h3 className="text-lg font-semibold text-center">Change Password</h3>
-    <div className="p-4">
-      <label className="block text-gray-700">Current Password</label>
-      <input
-        type="password"
-        className="w-full p-2 border rounded mt-1"
-        placeholder="Enter current password"
-      />
-    </div>
-    <div className="p-4">
-      <label className="block text-gray-700">New Password</label>
-      <input
-        type="password"
-        className="w-full p-2 border rounded mt-1"
-        placeholder="Enter new password"
-      />
-      <label className="block text-gray-700 mt-4">Confirm Password</label>
-      <input
-        type="password"
-        className="w-full p-2 border rounded mt-1"
-        placeholder="Confirm new password"
-      />
-      <button className="w-full bg-pink-500 text-white p-2 rounded mt-4">
+const ChangePassword = () => {
+  const [showPassword, setShowPassword] = useState({
+    current: false,
+    new: false,
+    confirm: false,
+  });
+
+  const togglePasswordVisibility = (field) => {
+    setShowPassword((prev) => ({ ...prev, [field]: !prev[field] }));
+  };
+
+  return (
+    <div className="max-w-lg mx-auto p-6 bg-white rounded-lg shadow-md">
+      <h3 className="text-xl font-semibold text-center mb-4">Change Password</h3>
+
+      {/* Current Password */}
+      <div className="mb-4 relative">
+        <label className="block text-gray-700 mb-1">Current Password</label>
+        <div className="relative">
+          <input
+            type={showPassword.current ? "password" : "text"}
+            className="w-full p-3 border rounded-lg pr-10"
+            placeholder="Enter current password"
+          />
+          <button
+            type="button"
+            className="absolute top-3 right-3 text-gray-500"
+            onClick={() => togglePasswordVisibility("current")}
+          >
+            {showPassword.current ? <AiOutlineEye size={20} /> : <AiOutlineEyeInvisible size={20} />}
+          </button>
+        </div>
+      </div>
+
+      {/* New Password */}
+      <div className="mb-4 relative">
+        <label className="block text-gray-700 mb-1">New Password</label>
+        <div className="relative">
+          <input
+            type={showPassword.new ? "password" : "text"}
+            className="w-full p-3 border rounded-lg pr-10"
+            placeholder="Enter new password"
+          />
+          <button
+            type="button"
+            className="absolute top-3 right-3 text-gray-500"
+            onClick={() => togglePasswordVisibility("new")}
+          >
+           {showPassword.current ? <AiOutlineEye size={20} /> : <AiOutlineEyeInvisible size={20} />}
+          </button>
+        </div>
+      </div>
+
+      {/* Confirm Password */}
+      <div className="mb-4 relative">
+        <label className="block text-gray-700 mb-1">Confirm Password</label>
+        <div className="relative">
+          <input
+            type={showPassword.confirm ? "password" : "text"}
+            className="w-full p-3 border rounded-lg pr-10"
+            placeholder="Confirm new password"
+          />
+          <button
+            type="button"
+            className="absolute top-3 right-3 text-gray-500"
+            onClick={() => togglePasswordVisibility("confirm")}
+          >
+              {showPassword.current ? <AiOutlineEyeInvisible size={20} /> : <AiOutlineEye size={20} />}
+          </button>
+        </div>
+      </div>
+
+      {/* Update Button */}
+      <button className="w-full bg-pink-500 text-white p-3 rounded-lg mt-2 hover:bg-pink-600 transition">
         Update Password
       </button>
     </div>
-  </div>
-);
+  );
+};
 
 // ✅ User List Tab Content
 const UserList = () => (
