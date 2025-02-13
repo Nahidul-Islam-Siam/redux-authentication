@@ -105,7 +105,7 @@ const Dashboard = () => {
           </Menu>
         </div>
       </div> */}
-      <Navbar/>
+      {/* <Navbar/> */}
 
       {/* Stats Cards - Responsive Grid */}
       <div className="grid sm:grid-cols-1 md:grid-cols-3 gap-6">
