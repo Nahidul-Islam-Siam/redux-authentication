@@ -1,10 +1,8 @@
 import { useState } from "react";
 import { AiOutlineEye, AiOutlineEyeInvisible } from "react-icons/ai";
-
 import { ToastContainer, toast } from "react-toastify";
 import "react-toastify/dist/ReactToastify.css";
-import { useSingupMutation } from "../redux/api/auth/authApi";
-
+import { useSignupMutation } from "../redux/api/auth/authApi";
 
 
 const SignUpForm = () => {
@@ -16,7 +14,7 @@ const SignUpForm = () => {
     confirmPassword: "",
   });
 
-  const [signup, { isLoading, isError, error }] = useSingupMutation();
+  const [signup, { isLoading, isError, error }] = useSignupMutation(); // Fix typo here
 
   const [showPassword, setShowPassword] = useState(false);
   const [showConfirmPassword, setShowConfirmPassword] = useState(false);
@@ -28,6 +26,7 @@ const SignUpForm = () => {
   const handleSubmit = async (e) => {
     e.preventDefault();
 
+    // Check if passwords match
     if (formData.password !== formData.confirmPassword) {
       toast.error("Passwords do not match");
       return;
@@ -36,11 +35,11 @@ const SignUpForm = () => {
     const requestBody = {
       name: formData.fullName,
       email: formData.email,
-      phone: formData.phone || null,
+      phone: formData.phone || null, // Ensure phone is optional
       password: formData.password,
-      referralCode: null,
+      referralCode: null, // Optional field
       isSocial: false,
-      fcmToken: null,
+      fcmToken: null, // Optional field
     };
 
     try {

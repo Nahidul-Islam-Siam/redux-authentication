@@ -2,12 +2,11 @@ import baseApi from "../baseApi";
 
 const authApi = baseApi.injectEndpoints({
     endpoints: (build) => ({
-        singup: build.mutation({
+        signup: build.mutation({
             query: (userData) => ({
-                url: `/user/create`,
+                url: `user/create`,
                 method: "POST",
                 body: userData,
-                credentials: "omit"
             })
         }),
         login: build.mutation({
@@ -15,7 +14,6 @@ const authApi = baseApi.injectEndpoints({
                 url: "/auth/login",
                 method: "POST",
                 body: credentials,
-                credentials: "omit"
             })
         }),
         verifyEmail: build.mutation({
@@ -32,7 +30,6 @@ const authApi = baseApi.injectEndpoints({
                 body: resendCodeData
             })
         }),
-
         sendForgetPasswordOTP: build.mutation({
             query: (email) => ({
                 url: "/auth/forget-password/send-otp",
@@ -42,14 +39,21 @@ const authApi = baseApi.injectEndpoints({
         }),
         verifyOTP: build.mutation({
             query: ({ email, code }) => ({
-                url: "/user/auth/verify-email",
+                url: "/auth/forget-password/verify-otp", // Ensure this URL is correct
                 method: "POST",
                 body: { email, code }
             })
         })
     }),
-})
+});
 
+export const { 
+    useSignupMutation, 
+    useLoginMutation, 
+    useVerifyEmailMutation, 
+    useResendVerificationCodeMutation, 
+    useSendForgetPasswordOTPMutation, 
+    useVerifyOTPMutation 
+} = authApi;
 
-export const { useSingupMutation, useLoginMutation, useVerifyEmailMutation, resendCodeData, useSendForgetPasswordOTPMutation, useVerifyOTPMutation } = authApi;
 export default authApi;
