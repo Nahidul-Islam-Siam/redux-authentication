@@ -1,32 +1,55 @@
-// services/authApi.js
+import baseApi from "../baseApi";
 
-import { api } from "../baseApi";
+const authApi = baseApi.injectEndpoints({
+    endpoints: (build) => ({
+        singup: build.mutation({
+            query: (userData) => ({
+                url: `/user/create`,
+                method: "POST",
+                body: userData,
+                credentials: "omit"
+            })
+        }),
+        login: build.mutation({
+            query: (credentials) => ({
+                url: "/auth/login",
+                method: "POST",
+                body: credentials,
+                credentials: "omit"
+            })
+        }),
+        verifyEmail: build.mutation({
+            query: (emailData) => ({
+                url: "/user/auth/verify-email",
+                method: "POST",
+                body: emailData
+            })
+        }),
+        resendVerificationCode: build.mutation({
+            query: (resendCodeData) => ({
+                url: "/user/auth/email-verification/resend-code",
+                method: "POST",
+                body: resendCodeData
+            })
+        }),
 
-
-// Auth API Slice
-export const authApi = api.injectEndpoints({
-  endpoints: (builder) => ({
-    // 🔹 User Registration
-    registerUser: builder.mutation({
-      query: (userData) => ({
-        url: "/user/create",
-        method: "POST",
-        body: userData,
-      }),
+        sendForgetPasswordOTP: build.mutation({
+            query: (email) => ({
+                url: "/auth/forget-password/send-otp",
+                method: "POST",
+                body: email
+            })
+        }),
+        verifyOTP: build.mutation({
+            query: ({ email, code }) => ({
+                url: "/user/auth/verify-email",
+                method: "POST",
+                body: { email, code }
+            })
+        })
     }),
+})
 
-    // 🔹 User Login
-    loginUser: builder.mutation({
-      query: (credentials) => ({
-        url: "/auth/login",
-        method: "POST",
-        body: credentials,
-      }),
-    }),
 
-    // 🔹 Other auth-related endpoints can go here (e.g., forgot password, etc.)
-  }),
-});
-
-// Export hooks to be used in components
-export const { useRegisterUserMutation, useLoginUserMutation } = authApi;
+export const { useSingupMutation, useLoginMutation, useVerifyEmailMutation, resendCodeData, useSendForgetPasswordOTPMutation, useVerifyOTPMutation } = authApi;
+export default authApi;

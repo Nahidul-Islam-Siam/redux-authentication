@@ -1,17 +1,16 @@
-// redux/store.js
 import { configureStore } from "@reduxjs/toolkit";
-import { api } from "./api/baseApi";
-import { authApi } from "./api/auth/authApi";
+import baseApi from "./api/baseApi";
+import authApi from "./api/auth/authApi";
 
 
 
-// Create the Redux store and add api slices
 const store = configureStore({
+    reducer: {
+        [baseApi.reducerPath]: baseApi.reducer,
+        [authApi.reducerPath]: authApi.reducer,
+    },
+    middleware: (getDefaultMiddleware) =>
+        getDefaultMiddleware().concat(baseApi.middleware, authApi.middleware),
+});
 
-  reducer:
-  {
-    [baseApi]
-  }
-})
- 
 export default store;

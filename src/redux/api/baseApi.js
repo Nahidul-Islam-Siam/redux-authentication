@@ -1,20 +1,23 @@
-// services/api.js
 import { createApi, fetchBaseQuery } from "@reduxjs/toolkit/query/react";
+import Cookies from "js-cookie";
 
-// Define the base URL
-const BASE_URL = "https://outlet-appointment-booking.onrender.com/v1";
+const baseApi = createApi({
+    reducerPath: "baseApi",
+    baseQuery: fetchBaseQuery({
+        baseUrl: "https://outlet-appointment-booking.onrender.com/v1",
+        credentials: "include",
+        prepareHeaders: (headers) => {
+            const token = Cookies.get("auth_token");
 
-// Base API setup
-export const api = createApi({
-  reducerPath: "baseApi",
-  baseQuery: fetchBaseQuery({
-    baseUrl: BASE_URL,
+            if (token) {
+                headers.set("Authorization", `Bearer ${token}`);
+            }
 
-  }),
-  endpoints: () => ({
-    // Define any common endpoints or leave it empty for now
-  }),
+            return headers;
+        }
+    }),
+    endpoints: () => ({}),
 });
 
-export const {} = api;
-export default api;
+export const { useGetPostsQuery, useAddPostMutation } = baseApi;
+export default baseApi;

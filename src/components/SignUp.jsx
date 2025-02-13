@@ -1,6 +1,10 @@
 import { useState } from "react";
 import { AiOutlineEye, AiOutlineEyeInvisible } from "react-icons/ai";
-import { useRegisterUserMutation } from "../redux/api/auth/authApi";
+
+import { ToastContainer, toast } from "react-toastify";
+import "react-toastify/dist/ReactToastify.css";
+import { useSingupMutation } from "../redux/api/auth/authApi";
+
 
 
 const SignUpForm = () => {
@@ -12,19 +16,10 @@ const SignUpForm = () => {
     confirmPassword: "",
   });
 
-
-  // Use the registerUser mutation from authApi
-  const [registerUser, { isLoading, error }] = useRegisterUserMutation();
+  const [signup, { isLoading, isError, error }] = useSingupMutation();
 
   const [showPassword, setShowPassword] = useState(false);
   const [showConfirmPassword, setShowConfirmPassword] = useState(false);
-
-
-   // Use the mutation hook from RTK Query
-
-  // const handleChange = (e) => {
-  //   setFormData({ ...formData, [e.target.name]: e.target.value });
-  // };
 
   const handleChange = (e) => {
     setFormData({ ...formData, [e.target.name]: e.target.value });
@@ -33,34 +28,41 @@ const SignUpForm = () => {
   const handleSubmit = async (e) => {
     e.preventDefault();
 
-    // Check if passwords match
     if (formData.password !== formData.confirmPassword) {
-      alert("Passwords do not match");
+      toast.error("Passwords do not match");
       return;
     }
 
+    const requestBody = {
+      name: formData.fullName,
+      email: formData.email,
+      phone: formData.phone || null,
+      password: formData.password,
+      referralCode: null,
+      isSocial: false,
+      fcmToken: null,
+    };
+
     try {
-      // Make the API call via RTK Query's mutation
-      const response = await registerUser(formData).unwrap();
+      const response = await signup(requestBody).unwrap();
       console.log("User Registered:", response);
 
-      // Handle successful registration
       if (response.accessToken) {
-        localStorage.setItem("accessToken", response.accessToken); // Store the access token
-        alert("Registration successful!");
+        localStorage.setItem("accessToken", response.accessToken);
+        toast.success("Registration successful!");
       } else {
-        alert("Registration failed. No access token returned.");
+        toast.error("Registration failed. No access token returned.");
       }
     } catch (err) {
       console.error("Error during registration:", err);
-      alert(`Registration failed. Reason: ${err?.data?.message || "Please try again."}`);
+      toast.error(`Registration failed: ${err?.data?.message || "Please try again."}`);
     }
   };
 
   return (
     <div className="flex justify-center items-center h-screen bg-gray-100">
       <div className="bg-white p-8 rounded-lg shadow-md w-96">
-        <h2 className="text-2xl font-bold mb-4 text-center">Sign Up to your account</h2>
+        <h2 className="text-2xl font-bold mb-4 text-center">Sign Up to Your Account</h2>
         <p className="text-gray-600 mb-6 text-center">Please Enter Your Personal Data</p>
 
         <form onSubmit={handleSubmit}>
@@ -102,11 +104,9 @@ const SignUpForm = () => {
               onChange={handleChange}
               className="border border-gray-300 rounded-md px-4 py-2 w-full focus:outline-none focus:ring-2 focus:ring-blue-500"
               placeholder="Enter your phone number"
-              required
             />
           </div>
 
-          {/* Password Field with Toggle */}
           <div className="mb-4 relative">
             <label htmlFor="password" className="block text-gray-700 font-bold mb-2">Password</label>
             <div className="relative">
@@ -129,7 +129,6 @@ const SignUpForm = () => {
             </div>
           </div>
 
-          {/* Confirm Password Field with Toggle */}
           <div className="mb-6 relative">
             <label htmlFor="confirmPassword" className="block text-gray-700 font-bold mb-2">Confirm Password</label>
             <div className="relative">
@@ -157,21 +156,11 @@ const SignUpForm = () => {
             className="bg-pink-500 hover:bg-pink-700 text-white font-bold py-2 px-4 rounded-md w-full focus:outline-none focus:ring-2 focus:ring-pink-300"
             disabled={isLoading}
           >
-            Sign Up
+            {isLoading ? "Signing Up..." : "Sign Up"}
           </button>
-
-          {error && (
-            <div className="mt-4 text-red-600 text-center">
-              {error?.data?.message || "Something went wrong. Please try again."}
-            </div>
-          )}
-
-
-          <p className="mt-4 text-center text-gray-600">
-            Have an account? <a href="/login" className="text-pink-500 hover:underline">Log in</a>
-          </p>
         </form>
       </div>
+      <ToastContainer position="top-right" autoClose={3000} />
     </div>
   );
 };
