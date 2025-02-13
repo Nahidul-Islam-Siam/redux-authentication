@@ -1,10 +1,12 @@
 import { useForm } from 'react-hook-form';
-import { Link } from 'react-router-dom';
+import { Link, useNavigate } from 'react-router-dom';
 import { toast } from 'react-toastify';
-import { useForgotPasswordMutation } from '../redux/api/auth/authApi';
+import { useForgotPasswordMutation, useSendForgetPasswordOTPMutation } from '../redux/api/auth/authApi';
 
 const ForgotPassword = () => {
   const [forgotPassword, { isLoading }] = useForgotPasswordMutation();
+  const [sendForgetPasswordOTP] = useSendForgetPasswordOTPMutation();
+  const navigate = useNavigate();
   
   const {
     register,
@@ -14,9 +16,10 @@ const ForgotPassword = () => {
 
   const onSubmit = async (data) => {
     try {
-      const response = await forgotPassword({ email: data.email }).unwrap();
+      const response = await sendForgetPasswordOTP({ email: data.email }).unwrap();
+      localStorage.setItem('resetEmail', data.email);
       toast.success(response.message || 'OTP sent successfully! Please check your email.');
-      // You might want to redirect to OTP verification page here
+      navigate(`/verify-otp/${encodeURIComponent(data.email)}`);
     } catch (error) {
       toast.error(error.data?.message || 'Failed to send OTP. Please try again.');
     }

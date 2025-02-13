@@ -50,10 +50,11 @@ const authApi = baseApi.injectEndpoints({
             })
         }),
         forgotPassword: builder.mutation({
-            query: (data) => ({
-                url: "/auth/forget-password/send-otp",
+            query: (credentials) => ({
+                url: "/auth/forget-password/send-otp",  // Updated the correct endpoint
                 method: "POST",
-                body: data,
+             
+                body: credentials,
             }),
         }),
     }),
