@@ -7,7 +7,8 @@ import VerificationForm from "../components/VerificationForm";
 import SetNewPasswordForm from "../components/SetNewPasswordForm";
 import Dashboard from "../components/Dashboard";
 import MainLayout from "./MainLayout";
-import EditProfile from "../components/Settings";  // Ensure this component is correctly imported
+
+import ProfileSettings from "../components/Settings";
 
 const router = createBrowserRouter([
   {
@@ -15,42 +16,42 @@ const router = createBrowserRouter([
     element: <App />,
     children: [
       {
-        index: true,  // Signup page without Navbar
+        index: true,  
         element: <SignupForm />,
       },
       {
-        path: "login",  // Login page without Navbar
+        path: "login",  
         element: <LoginForm />,
       },
       {
-        path: "forgot-password",  // Forgot Password page without Navbar
+        path: "forgot-password",  
         element: <ForgotPasswordForm />,
       },
       {
-        path: "verification-form",  // Verification page without Navbar
+        path: "verification-form",  
         element: <VerificationForm />,
       },
       {
-        path: "set-new-password-form",  // Set New Password page without Navbar
+        path: "set-new-password-form",  
         element: <SetNewPasswordForm />,
       },
       {
-        path: "dashboard",  // Dashboard page with Navbar
-        element: <MainLayout />,  // Using MainLayout to include Navbar
+        path: "dashboard",  
+        element: <MainLayout />,  
         children: [
           {
-            index: true,  // Default route for Dashboard
+            index: true,  
             element: <Dashboard />,
           },
         ],
       },
       {
-        path: "setting",  // Settings page with Navbar (separate from /dashboard)
-        element: <MainLayout />,  // Using MainLayout to include Navbar
+        path: "setting",  
+        element: <MainLayout />,  
         children: [
           {
-            index: true,
-            element: <EditProfile />,  // Settings page will render here
+            path: ":tab?", // Accepts optional `tab` parameter (e.g., /setting/edit-profile)
+            element: <ProfileSettings />,
           },
         ],
       },
