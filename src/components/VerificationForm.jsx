@@ -6,11 +6,8 @@ import { toast } from 'react-toastify';
 
 const VerificationForm = () => {
   const { register, handleSubmit, setValue, watch, formState: { errors }, setFocus } = useForm({
-    defaultValues: { code: ['', '', '', '', ''] }
+    defaultValues: { code: ['', '', '', ''] }
   });
-
-
-
 
   const [verifyOTP, { isLoading }] = useVerifyOTPMutation();
   const [resendVerificationCode] = useResendVerificationCodeMutation();
@@ -18,10 +15,10 @@ const VerificationForm = () => {
   const navigate = useNavigate();
   const inputsRef = useRef([]);
 
-  const codeValues = watch("code") || ['','','','','']; // Ensure codeValues is always an array
+  const codeValues = watch("code") || ['','','',''];
   const param = useParams();
   const email = param.email;
-
+   console.log("codeValues: ",codeValues)
 
   console.log(email);
   const handleChange = (index, event) => {
@@ -32,7 +29,7 @@ const VerificationForm = () => {
     newCode[index] = value;
     setValue("code", newCode);
 
-    if (value && index < 4) {
+    if (value && index < 3) {
       inputsRef.current[index + 1]?.focus();
     }
   };
@@ -78,7 +75,7 @@ const VerificationForm = () => {
         <h2 className="text-2xl font-bold mb-4 text-center">Verification Code</h2>
         <p className="text-gray-600 mb-6 text-center">
           We sent a reset link to your {param?.email}.<br />
-          Enter the 5-digit code mentioned in the email.
+          Enter the 4-digit code mentioned in the email.
         </p>
 
         <form onSubmit={handleSubmit(onSubmit)}>
@@ -99,7 +96,7 @@ const VerificationForm = () => {
             ))}
           </div>
 
-          {errors.code && <p className="text-red-500 text-center">Please enter all 5 digits.</p>}
+          {errors.code && <p className="text-red-500 text-center">Please enter all 4 digits.</p>}
 
           <button
             type="submit"
