@@ -86,7 +86,7 @@ export default function SignUpForm() {
                         <label className="block text-sm font-medium text-gray-700">Password</label>
                         <input
                             type={showPassword ? "text" : "password"}
-                            {...register("password", { required: "Password is required", minLength: { value: 6, message: "Password must be at least 6 characters" } })}
+                            {...register("password", { required: "Password is required", minLength: { value: 8, message: "Password must be at least 8 characters" } })}
                             className="mt-1 w-full p-2 border rounded focus:ring focus:ring-pink-300"
                             placeholder="********"
                         />
