@@ -3,26 +3,33 @@ import PropTypes from "prop-types"; // ✅ Import PropTypes
 import { Tab, Tabs, TabList, TabPanel } from "react-tabs";
 import { useNavigate, useParams } from "react-router-dom";
 import "react-tabs/style/react-tabs.css";
-
-
 import { AiOutlineEye, AiOutlineEyeInvisible } from "react-icons/ai";
 
-
 // ✅ Profile Header Component (Shows User Info)
+
+
 const ProfileHeader = ({ name }) => (
-  <div className="bg-pink-500 p-6 rounded-lg text-white text-center">
-    <img
-      src="https://via.placeholder.com/80"
-      alt="Profile"
-      className="w-20 h-20 rounded-full mx-auto border-4 border-white"
-    />
-    <h2 className="text-xl font-semibold mt-2">{name}</h2>
-    <p>Admin</p>
+  <div className="bg-pink-500 w-full flex flex-col items-center p-10 rounded-lg text-white">
+    <div className="flex flex-row items-center gap-3">
+      <div>
+        <img
+          src="https://via.placeholder.com/80"
+          alt="Profile"
+          className="w-20 h-20 rounded-full border-4 border-white"
+        />
+      </div>
+      <div className="text-left items-center gap-3">
+        <h2 className="text-2xl font-semibold">{name}</h2>
+        <span className="text-sm  pt-6">Admin</span>
+      </div>
+    </div>
   </div>
 );
+
 ProfileHeader.propTypes = {
   name: PropTypes.string.isRequired,
 };
+
 
 // ✅ Edit Profile Tab Content
 const EditProfile = ({ name, setName, contact, setContact }) => (
@@ -107,7 +114,7 @@ const ChangePassword = () => {
             className="absolute top-3 right-3 text-gray-500"
             onClick={() => togglePasswordVisibility("new")}
           >
-           {showPassword.current ? <AiOutlineEye size={20} /> : <AiOutlineEyeInvisible size={20} />}
+            {showPassword.new ? <AiOutlineEye size={20} /> : <AiOutlineEyeInvisible size={20} />}
           </button>
         </div>
       </div>
@@ -126,7 +133,7 @@ const ChangePassword = () => {
             className="absolute top-3 right-3 text-gray-500"
             onClick={() => togglePasswordVisibility("confirm")}
           >
-              {showPassword.current ? <AiOutlineEyeInvisible size={20} /> : <AiOutlineEye size={20} />}
+            {showPassword.confirm ? <AiOutlineEyeInvisible size={20} /> : <AiOutlineEye size={20} />}
           </button>
         </div>
       </div>
@@ -142,7 +149,7 @@ const ChangePassword = () => {
 // ✅ User List Tab Content
 const UserList = () => (
   <div>
-    <h3 className="text-lg font-semibold text-center">User List</h3>
+    <h3 className="text-lg font-semibold text-center"> User List</h3>
     <p className="text-gray-600 text-center p-4">No users available.</p>
   </div>
 );
@@ -153,7 +160,7 @@ const ProfileSettings = () => {
   const { tab } = useParams();
 
   // List of allowed tab paths
-  const tabPaths = ["edit-profile", "change-password", "user-list"];
+  const tabPaths = ["edit-profile", "change-password"];
 
   // State for profile inputs
   const [name, setName] = useState("John Doe");
@@ -173,39 +180,49 @@ const ProfileSettings = () => {
   // Update URL when switching tabs
   const handleTabChange = (index) => {
     setSelectedIndex(index);
-    navigate(`/setting/${tabPaths[index]}`, { replace: true });
+
+    // Redirect to the user-details page when "User List" tab is clicked
+    if (index === 2) {
+      navigate("/user-details"); // Redirect to user-details page
+    } else {
+      navigate(`/setting/${tabPaths[index]}`, { replace: true });
+    }
   };
 
   return (
-    <div className="max-w-3xl mx-auto p-6 bg-white rounded-lg shadow-md">
-      {/* ✅ Profile Header */}
-      <ProfileHeader name={name} />
+    <div className="h-screen flex items-center justify-center">
+      <div className="max-w-3xl w-full p-6 bg-white rounded-lg shadow-md">
+        {/* ✅ Centered Profile Header */}
+        <div className="flex justify-center">
+          <ProfileHeader name={name} />
+        </div>
 
-      {/* ✅ Tab Navigation */}
-      <Tabs selectedIndex={selectedIndex} onSelect={handleTabChange}>
-        <TabList className="flex justify-center  space-x-4 p-2">
-          <Tab className="cursor-pointer p-2" selectedClassName="text-pink-500 border-b-2 border-pink-500 font-semibold">
-            Edit Profile
-          </Tab>
-          <Tab className="cursor-pointer p-2" selectedClassName="text-pink-500 border-b-2 border-pink-500 font-semibold">
-            Change Password
-          </Tab>
-          <Tab className="cursor-pointer p-2" selectedClassName="text-pink-500 border-b-2 border-pink-500 font-semibold">
-            User List
-          </Tab>
-        </TabList>
+        {/* ✅ Tabs Navigation */}
+        <Tabs selectedIndex={selectedIndex} onSelect={handleTabChange}>
+          <TabList className="flex justify-center space-x-4 p-2">
+            <Tab className="cursor-pointer p-2" selectedClassName="text-pink-500 border-b-2 border-pink-500 font-semibold">
+              Edit Profile
+            </Tab>
+            <Tab className="cursor-pointer p-2" selectedClassName="text-pink-500 border-b-2 border-pink-500 font-semibold">
+              Change Password
+            </Tab>
+            <Tab className="cursor-pointer p-2" selectedClassName="text-pink-500 border-b-2 border-pink-500 font-semibold">
+              User List
+            </Tab>
+          </TabList>
 
-        {/* ✅ Tab Content */}
-        <TabPanel>
-          <EditProfile name={name} setName={setName} contact={contact} setContact={setContact} />
-        </TabPanel>
-        <TabPanel>
-          <ChangePassword />
-        </TabPanel>
-        <TabPanel>
-          <UserList />
-        </TabPanel>
-      </Tabs>
+          {/* ✅ Tab Content */}
+          <TabPanel>
+            <EditProfile name={name} setName={setName} contact={contact} setContact={setContact} />
+          </TabPanel>
+          <TabPanel>
+            <ChangePassword />
+          </TabPanel>
+          <TabPanel>
+            <UserList />
+          </TabPanel>
+        </Tabs>
+      </div>
     </div>
   );
 };
