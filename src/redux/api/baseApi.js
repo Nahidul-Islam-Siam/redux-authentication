@@ -16,6 +16,28 @@ const baseQuery = fetchBaseQuery({
 });
 
 // Add error handling wrapper
+
+export const baseQueryWithAuth = async (args, api, extraOptions) => {
+    const result = await baseQuery(args, api, extraOptions);
+    
+    // Check if it's a registration response
+    if (result?.data && args.url === '/user/create' && result.data.status === 'success') {
+        // Save token if it exists
+        if (result.data.token) {
+            localStorage.setItem('token', result.data.token);
+        }
+        
+        // Save user data
+        const userData = result.data.data;
+        localStorage.setItem('user', JSON.stringify(userData));
+        
+        console.log('Saved user data:', userData);
+    }
+
+    return result;
+};
+
+
 const baseQueryWithErrorHandling = async (args, api, extraOptions) => {
     const result = await baseQuery(args, api, extraOptions);
     
