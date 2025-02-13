@@ -9,6 +9,7 @@ import Dashboard from "../components/Dashboard";
 import MainLayout from "./MainLayout";
 
 import ProfileSettings from "../components/Settings";
+import UserTable from "../components/UserList";
 
 const router = createBrowserRouter([
   {
@@ -42,6 +43,16 @@ const router = createBrowserRouter([
           {
             index: true,  
             element: <Dashboard />,
+          },
+        ],
+      },
+      {
+        path: "user-details",  
+        element: <MainLayout />,  
+        children: [
+          {
+            index: true,  
+            element: <UserTable/>,
           },
         ],
       },
