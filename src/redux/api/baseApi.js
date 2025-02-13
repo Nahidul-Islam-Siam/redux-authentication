@@ -1,20 +1,20 @@
 import { createApi, fetchBaseQuery } from "@reduxjs/toolkit/query/react";
-// import Cookies from "js-cookie";
+import Cookies from "js-cookie";
 
 const baseApi = createApi({
     reducerPath: "baseApi",
     baseQuery: fetchBaseQuery({
         baseUrl: "https://outlet-appointment-booking.onrender.com/v1",
         credentials: "include",
-        // prepareHeaders: (headers) => {
-        //     const token = Cookies.get("auth_token");
+        prepareHeaders: (headers) => {
+            const token = Cookies.get("auth_token");
 
-        //     if (token) {
-        //         headers.set("Authorization", `Bearer ${token}`);
-        //     }
+            if (token) {
+                headers.set("Authorization", `Bearer ${token}`);
+            }
 
-        //     return headers;
-        // }
+            return headers;
+        }
     }),
     endpoints: () => ({}),
 });

@@ -1,167 +1,131 @@
 import { useState } from "react";
-import { AiOutlineEye, AiOutlineEyeInvisible } from "react-icons/ai";
-import { ToastContainer, toast } from "react-toastify";
-import "react-toastify/dist/ReactToastify.css";
-import { useSignupMutation } from "../redux/api/auth/authApi";
+import { useForm } from "react-hook-form";
+import { IoEyeOffOutline, IoEyeOutline } from "react-icons/io5";
+import { Link, useNavigate } from "react-router-dom";
+
+import { toast } from "react-toastify";
+import { useSingupMutation } from "../redux/api/auth/authApi";
 
 
-const SignUpForm = () => {
-  const [formData, setFormData] = useState({
-    fullName: "",
-    email: "",
-    phone: "",
-    password: "",
-    confirmPassword: "",
-  });
+export default function SignUpForm() {
+    const navigate = useNavigate();
+    const [showPassword, setShowPassword] = useState(false);
+    const [showConfirmPassword, setShowConfirmPassword] = useState(false);
 
-  const [signup, { isLoading, isError, error }] = useSignupMutation(); // Fix typo here
+    const [singup, { isLoading, error }] = useSingupMutation();
 
-  const [showPassword, setShowPassword] = useState(false);
-  const [showConfirmPassword, setShowConfirmPassword] = useState(false);
+    const {
+        register,
+        handleSubmit,
+        formState: { errors },
+    } = useForm();
 
-  const handleChange = (e) => {
-    setFormData({ ...formData, [e.target.name]: e.target.value });
-  };
-
-  const handleSubmit = async (e) => {
-    e.preventDefault();
-
-    // Check if passwords match
-    if (formData.password !== formData.confirmPassword) {
-      toast.error("Passwords do not match");
-      return;
-    }
-
-    const requestBody = {
-      name: formData.fullName,
-      email: formData.email,
-      phone: formData.phone || null, // Ensure phone is optional
-      password: formData.password,
-      referralCode: null, // Optional field
-      isSocial: false,
-      fcmToken: null, // Optional field
+    const togglePasswordVisibility = () => {
+        setShowPassword(!showPassword);
     };
 
-    try {
-      const response = await signup(requestBody).unwrap();
-      console.log("User Registered:", response);
+    const passwordToggle = () => {
+        setShowConfirmPassword(!showConfirmPassword);
+    };
 
-      if (response.accessToken) {
-        localStorage.setItem("accessToken", response.accessToken);
-        toast.success("Registration successful!");
-      } else {
-        toast.error("Registration failed. No access token returned.");
-      }
-    } catch (err) {
-      console.error("Error during registration:", err);
-      toast.error(`Registration failed: ${err?.data?.message || "Please try again."}`);
-    }
-  };
+    const onSubmit = async (data) => {
+        try {
+            const res = await singup(data).unwrap();
+            console.log("Registration successful!", res);
 
-  return (
-    <div className="flex justify-center items-center h-screen bg-gray-100">
-      <div className="bg-white p-8 rounded-lg shadow-md w-96">
-        <h2 className="text-2xl font-bold mb-4 text-center">Sign Up to Your Account</h2>
-        <p className="text-gray-600 mb-6 text-center">Please Enter Your Personal Data</p>
+            toast("User Register Sucessfully");
 
-        <form onSubmit={handleSubmit}>
-          <div className="mb-4">
-            <label htmlFor="fullName" className="block text-gray-700 font-bold mb-2">Full Name</label>
-            <input
-              type="text"
-              id="fullName"
-              name="fullName"
-              value={formData.fullName}
-              onChange={handleChange}
-              className="border border-gray-300 rounded-md px-4 py-2 w-full focus:outline-none focus:ring-2 focus:ring-blue-500"
-              placeholder="Enter your name"
-              required
-            />
-          </div>
+            navigate("/login")
+        } catch (err) {
+            console.error("Registration failed:", err);
+            toast.error(error.message )
+        }
+    };
 
-          <div className="mb-4">
-            <label htmlFor="email" className="block text-gray-700 font-bold mb-2">Email</label>
-            <input
-              type="email"
-              id="email"
-              name="email"
-              value={formData.email}
-              onChange={handleChange}
-              className="border border-gray-300 rounded-md px-4 py-2 w-full focus:outline-none focus:ring-2 focus:ring-blue-500"
-              placeholder="Enter your email"
-              required
-            />
-          </div>
+    return (
+        <div className="flex items-center justify-center min-h-screen bg-gray-100 p-4">
+            <div className="bg-white px-14 py-10 rounded-lg shadow-md w-full max-w-md">
+                <h2 className="text-2xl font-semibold text-center mb-4">Sign Up to Your Account</h2>
+                <p className="text-center text-gray-500 mb-6">Please Enter Your Personal Data</p>
 
-          <div className="mb-4">
-            <label htmlFor="phone" className="block text-gray-700 font-bold mb-2">Phone Number</label>
-            <input
-              type="tel"
-              id="phone"
-              name="phone"
-              value={formData.phone}
-              onChange={handleChange}
-              className="border border-gray-300 rounded-md px-4 py-2 w-full focus:outline-none focus:ring-2 focus:ring-blue-500"
-              placeholder="Enter your phone number"
-            />
-          </div>
+                <form onSubmit={handleSubmit(onSubmit)} className="space-y-4">
+                    <div>
+                        <label className="block text-sm font-medium text-gray-700">Full Name</label>
+                        <input
+                            type="text"
+                            {...register("fullName", { required: "Full name is required" })}
+                            className="mt-1 w-full p-2 border rounded focus:ring focus:ring-pink-300"
+                            placeholder="Enter your name"
+                        />
+                        {errors.fullName && <p className="text-red-500 text-xs mt-1">{errors.fullName.message}</p>}
+                    </div>
 
-          <div className="mb-4 relative">
-            <label htmlFor="password" className="block text-gray-700 font-bold mb-2">Password</label>
-            <div className="relative">
-              <input
-                type={showPassword ? "text" : "password"}
-                id="password"
-                name="password"
-                value={formData.password}
-                onChange={handleChange}
-                className="border border-gray-300 rounded-md px-4 py-2 w-full focus:outline-none focus:ring-2 focus:ring-blue-500"
-                placeholder="Enter your password"
-                required
-              />
-              <span
-                className="absolute top-3 right-3 cursor-pointer text-gray-600"
-                onClick={() => setShowPassword(!showPassword)}
-              >
-                {showPassword ? <AiOutlineEyeInvisible size={20} /> : <AiOutlineEye size={20} />}
-              </span>
+                    <div>
+                        <label className="block text-sm font-medium text-gray-700">Email</label>
+                        <input
+                            type="email"
+                            {...register("email", { required: "Email is required", pattern: { value: /^[a-zA-Z0-9._%+-]+@[a-zA-Z0-9.-]+\.[a-zA-Z]{2,4}$/, message: "Invalid email format" } })}
+                            className="mt-1 w-full p-2 border rounded focus:ring focus:ring-pink-300"
+                            placeholder="Enter your email"
+                        />
+                        {errors.email && <p className="text-red-500 text-xs mt-1">{errors.email.message}</p>}
+                    </div>
+
+                    <div>
+                        <label className="block text-sm font-medium text-gray-700">Phone Number</label>
+                        <input
+                            type="tel"
+                            {...register("phone", { required: "Phone number is required" })}
+                            className="mt-1 w-full p-2 border rounded focus:ring focus:ring-pink-300"
+                            placeholder="Enter your phone no"
+                        />
+                        {errors.phone && <p className="text-red-500 text-xs mt-1">{errors.phone.message}</p>}
+                    </div>
+
+                    <div className="relative">
+                        <label className="block text-sm font-medium text-gray-700">Password</label>
+                        <input
+                            type={showPassword ? "text" : "password"}
+                            {...register("password", { required: "Password is required", minLength: { value: 6, message: "Password must be at least 6 characters" } })}
+                            className="mt-1 w-full p-2 border rounded focus:ring focus:ring-pink-300"
+                            placeholder="********"
+                        />
+                        <button type="button" onClick={togglePasswordVisibility} className="absolute right-3 top-9 text-gray-500">
+                            {showPassword ? <IoEyeOutline /> : <IoEyeOffOutline />}
+                        </button>
+                        {errors.password && <p className="text-red-500 text-xs mt-1">{errors.password.message}</p>}
+                    </div>
+
+                    <div className="relative">
+                        <label className="block text-sm font-medium text-gray-700">Confirm Password</label>
+                        <input
+                            type={showConfirmPassword ? "text" : "password"}
+                            {...register("confirmPassword", { required: "Confirm Password is required" })}
+                            className="mt-1 w-full p-2 border rounded focus:ring focus:ring-pink-300"
+                            placeholder="********"
+                        />
+                        <button type="button" onClick={passwordToggle} className="absolute right-3 top-9 text-gray-500">
+                            {showConfirmPassword ? <IoEyeOutline /> : <IoEyeOffOutline />}
+                        </button>
+                        {errors.confirmPassword && <p className="text-red-500 text-xs mt-1">{errors.confirmPassword.message}</p>}
+                    </div>
+
+                    <div className="text-center">
+                        <button
+                            type="submit"
+                            className="px-4 bg-[#ED1E79] text-white py-2 rounded hover:bg-pink-600"
+                            disabled={isLoading}
+                        >
+                            {isLoading ? "Signing Up..." : "Sign Up"}
+                        </button>
+                    </div>
+                </form>
+
+                <p className="text-center text-sm text-gray-600 mt-4">
+                    Have an account?
+                    <Link to="/login" className="text-pink-500 hover:underline"> Log in</Link>
+                </p>
             </div>
-          </div>
-
-          <div className="mb-6 relative">
-            <label htmlFor="confirmPassword" className="block text-gray-700 font-bold mb-2">Confirm Password</label>
-            <div className="relative">
-              <input
-                type={showConfirmPassword ? "text" : "password"}
-                id="confirmPassword"
-                name="confirmPassword"
-                value={formData.confirmPassword}
-                onChange={handleChange}
-                className="border border-gray-300 rounded-md px-4 py-2 w-full focus:outline-none focus:ring-2 focus:ring-blue-500"
-                placeholder="Confirm password"
-                required
-              />
-              <span
-                className="absolute top-3 right-3 cursor-pointer text-gray-600"
-                onClick={() => setShowConfirmPassword(!showConfirmPassword)}
-              >
-                {showConfirmPassword ? <AiOutlineEyeInvisible size={20} /> : <AiOutlineEye size={20} />}
-              </span>
-            </div>
-          </div>
-
-          <button
-            type="submit"
-            className="bg-pink-500 hover:bg-pink-700 text-white font-bold py-2 px-4 rounded-md w-full focus:outline-none focus:ring-2 focus:ring-pink-300"
-            disabled={isLoading}
-          >
-            {isLoading ? "Signing Up..." : "Sign Up"}
-          </button>
-        </form>
-      </div>
-      <ToastContainer position="top-right" autoClose={3000} />
-    </div>
-  );
-};
-
-export default SignUpForm;
+        </div>
+    );
+}
