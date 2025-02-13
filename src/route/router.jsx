@@ -8,8 +8,8 @@ import SetNewPasswordForm from "../components/SetNewPasswordForm";
 import Dashboard from "../components/Dashboard";
 import MainLayout from "./MainLayout";
 
-import ProfileSettings from "../components/Settings";
 import UserTable from "../components/UserList";
+import ProfileSettings from "../components/Settings";
 
 const router = createBrowserRouter([
   {
@@ -61,9 +61,13 @@ const router = createBrowserRouter([
         element: <MainLayout />,  
         children: [
           {
-            path: ":tab?", // Accepts optional `tab` parameter (e.g., /setting/edit-profile)
+            path: "",  // Empty path for index route
             element: <ProfileSettings />,
           },
+          {
+            path: ":tab",  // This will handle /setting/edit-profile
+            element: <ProfileSettings />,
+          }
         ],
       },
     ],
