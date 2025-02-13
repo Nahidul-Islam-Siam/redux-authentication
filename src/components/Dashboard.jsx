@@ -1,9 +1,10 @@
 import { LineChart, Line, BarChart, Bar, XAxis, YAxis, CartesianGrid, Tooltip, Legend, ResponsiveContainer, AreaChart, Area } from 'recharts';
-import { FaUser, FaStore, FaDollarSign } from "react-icons/fa";
-import { Menu, Transition } from '@headlessui/react';
-import { Fragment } from 'react';
+import { FaUser, FaStore, FaDollarSign, FaStar, FaExternalLinkAlt } from "react-icons/fa";
+import { Dialog, Menu, Transition } from '@headlessui/react';
+import { Fragment, useState } from 'react';
 import Navbar from './Navbar';
-
+import { AiOutlineClose } from 'react-icons/ai';
+import a2 from "../assets/a2.png" 
 const Dashboard = () => {
   const userData = [
     { name: 'Jan', appUser: 2000, active: 1500 },
@@ -36,76 +37,28 @@ const Dashboard = () => {
   ];
 
   const feedbackData = [
-    { id: "#1239", user: "Abdul", provider: "Mr. Jone", review: "⭐️⭐️⭐️⭐️⭐️" },
-    { id: "#1238", user: "Basar", provider: "Mr. Dibala", review: "⭐️⭐️⭐️⭐️⭐️" },
-    { id: "#1237", user: "Habiba", provider: "Paris Hairs", review: "⭐️⭐️⭐️⭐️⭐️" },
-    { id: "#1236", user: "Basar", provider: "Alex Selun", review: "⭐️⭐️⭐️⭐️⭐️" },
-    { id: "#1234", user: "Habiba", provider: "Yolanda", review: "⭐️⭐️⭐️⭐️⭐️" }
+    { id: "#1239", user: "Abdul", image: "https://via.placeholder.com/64", provider: "Mr. Jone", review: 4.5, comment: "Great service and friendly provider!" },
+    { id: "#1238", user: "Basar", image: "https://via.placeholder.com/64", provider: "Mr. Dibala", review: 5, comment: "Excellent experience!" },
+    { id: "#1237", user: "Habiba", image: "https://via.placeholder.com/64", provider: "Paris Hairs", review: 4.8, comment: "Loved the hair treatment." },
+    { id: "#1236", user: "Basar", image: "https://via.placeholder.com/64", provider: "Alex Selun", review: 4.7, comment: "Very professional and courteous." },
+    { id: "#1234", user: "Habiba", image: "https://via.placeholder.com/64", provider: "Yolanda", review: 4.2, comment: "Good service but room for improvement." },
   ];
+  const [isOpen, setIsOpen] = useState(false);
+  const [selectedUser, setSelectedUser] = useState(null);
+
+  const openModal = (user) => {
+    setSelectedUser(user);
+    setIsOpen(true);
+  };
+
+  const closeModal = () => {
+    setIsOpen(false);
+    setSelectedUser(null);
+  };
 
   return (
     <div className="p-6 bg-gray-100 min-h-screen">
-      {/* <div className="bg-pink-600 p-4 flex justify-between items-center text-white rounded-lg mb-6">
-        <h1 className="text-2xl font-bold">STA Task</h1>
-        <div className="flex items-center">
-          <span className="mr-2">Admin Marie</span>
-          <Menu as="div" className="relative">
-            <div>
-              <Menu.Button className="w-10 h-10 bg-white rounded-full flex items-center justify-center">
-                <img src="/path/to/your/image.jpg" alt="Admin" className="w-8 h-8 rounded-full" />
-              </Menu.Button>
-            </div>
-            <Transition
-              as={Fragment}
-              enter="transition ease-out duration-100"
-              enterFrom="transform opacity-0 scale-95"
-              enterTo="transform opacity-100 scale-100"
-              leave="transition ease-in duration-75"
-              leaveFrom="transform opacity-100 scale-100"
-              leaveTo="transform opacity-0 scale-95"
-            >
-              <Menu.Items className="absolute right-0 w-48 mt-2 origin-top-right bg-white border border-gray-100 rounded-md shadow-lg focus:outline-none">
-                <div className="py-1">
-                  <Menu.Item>
-                    {({ active }) => (
-                      <button
-                        className={`${
-                          active ? 'bg-pink-600 text-white' : 'text-gray-900'
-                        } block px-4 py-2 text-sm`}
-                      >
-                        Profile
-                      </button>
-                    )}
-                  </Menu.Item>
-                  <Menu.Item>
-                    {({ active }) => (
-                      <button
-                        className={`${
-                          active ? 'bg-pink-600 text-white' : 'text-gray-900'
-                        } block px-4 py-2 text-sm`}
-                      >
-                      <a href="/Setting">Settings</a>
-                      </button>
-                    )}
-                  </Menu.Item>
-                  <Menu.Item>
-                    {({ active }) => (
-                      <button
-                        className={`${
-                          active ? 'bg-pink-600 text-white' : 'text-gray-900'
-                        } block px-4 py-2 text-sm`}
-                      >
-                        Logout
-                      </button>
-                    )}
-                  </Menu.Item>
-                </div>
-              </Menu.Items>
-            </Transition>
-          </Menu>
-        </div>
-      </div> */}
-      {/* <Navbar/> */}
+   
 
       {/* Stats Cards - Responsive Grid */}
       <div className="grid sm:grid-cols-1 md:grid-cols-3 gap-6">
@@ -174,30 +127,73 @@ const Dashboard = () => {
           </ResponsiveContainer>
         </div>
 
-        {/* Feedback Table */}
+      
         <div className="p-4 bg-white shadow rounded-lg">
-          <h3 className="font-semibold mb-4">Feedbacks</h3>
-          <table className="w-full border-collapse">
-            <thead>
-              <tr className="bg-gray-200">
-                <th className="p-2">S.ID</th>
-                <th className="p-2">User</th>
-                <th className="p-2">Provider</th>
-                <th className="p-2">Review</th>
-              </tr>
-            </thead>
-            <tbody>
-              {feedbackData.map((feedback, index) => (
-                <tr key={index} className="border-b">
-                  <td className="p-2 text-center">{feedback.id}</td>
-                  <td className="p-2 text-center">{feedback.user}</td>
-                  <td className="p-2 text-center">{feedback.provider}</td>
-                  <td className="p-2 text-center">{feedback.review}</td>
-                </tr>
-              ))}
-            </tbody>
-          </table>
+      <h3 className="font-semibold mb-4">Feedbacks</h3>
+      <table className="w-full border-collapse text-sm">
+        <thead>
+          <tr className="bg-gray-200">
+            <th className="p-2">S.ID</th>
+            <th className="p-2">User</th>
+            <th className="p-2">Provider</th>
+            <th className="p-2">Review</th>
+            <th className="p-2 text-center">Action</th>
+          </tr>
+        </thead>
+        <tbody>
+          {feedbackData.map((feedback, index) => (
+            <tr key={index} className={index % 2 === 0 ? "bg-gray-50" : ""}>
+              <td className="p-2 text-center">{feedback.id}</td>
+              <td className="p-2 flex items-center gap-2">
+                <img src={feedback.image} alt={feedback.user} className="w-8 h-8 rounded-full object-cover" />
+                {feedback.user}
+              </td>
+              <td className="p-2 text-center">{feedback.provider}</td>
+              <td className="p-2 flex items-center justify-center gap-1">
+                <FaStar className="text-red-500" /> {feedback.review}/5
+              </td>
+              <td className="p-2 text-center">
+                <button onClick={() => openModal(feedback)} className="text-blue-500">
+
+                  <img src={a2} alt="" srcset="" />
+                </button>
+              </td>
+            </tr>
+          ))}
+        </tbody>
+      </table>
+
+      <Dialog open={isOpen} onClose={closeModal} className="fixed inset-0 flex items-center justify-center bg-black bg-opacity-50 z-50">
+        <div className="bg-white p-6 rounded-md shadow-lg relative max-w-lg w-full">
+          <AiOutlineClose className="absolute top-2 right-2 text-gray-600 cursor-pointer" size={24} onClick={closeModal} />
+          {selectedUser && (
+            <div className="flex flex-col">
+              <h2 className="text-lg font-bold text-pink-600">Feedback Details</h2>
+              <div className="flex justify-between items-center mt-4 border-b pb-4">
+                <div className="flex items-center gap-3">
+                  <img src={selectedUser.image} alt={selectedUser.user} className="w-12 h-12 rounded-full object-cover" />
+                  <div>
+                    <p className="font-bold text-pink-600">{selectedUser.user}</p>
+                    <p className="text-xs text-gray-600">{selectedUser.id}</p>
+                  </div>
+                </div>
+                <div className="flex items-center gap-3">
+                  <img src={selectedUser.image} alt={selectedUser.provider} className="w-12 h-12 rounded-full object-cover" />
+                  <div>
+                    <p className="font-bold text-pink-600">{selectedUser.provider}</p>
+                  </div>
+                </div>
+              </div>
+              <div className="mt-4">
+                <p className="font-medium text-gray-700">Rating: <span className="text-pink-600 font-bold">⭐ {selectedUser.review}/5</span></p>
+                <p className="mt-2"><span className="font-bold">Comment:</span> {selectedUser.comment}</p>
+              </div>
+            </div>
+          )}
         </div>
+      </Dialog>
+    </div>
+
       </div>
     </div>
   );

@@ -1,39 +1,29 @@
-import React, { useState } from 'react';
+import { useState } from 'react';
 import action from '../assets/action.png';
+import { Dialog } from '@headlessui/react';
+import { AiOutlineClose } from 'react-icons/ai';
 
 const UserTable = () => {
     const [users, setUsers] = useState([
         {
-          id: '#1239',
-          name: 'Mr. Mahmud',
-          email: 'm101@gmail.ru',
-          contact: '(+33) 70 05 56 27',
-          location: 'Corona, Michigan',
-          image: 'https://via.placeholder.com/32',
+            id: '#1239',
+            name: 'Mr. Mahmud',
+            email: 'm101@gmail.ru',
+            contact: '(+33) 70 05 56 27',
+            location: 'Corona, Michigan',
+            image: 'https://via.placeholder.com/32', // Replace with actual image URLs
+            dob: '17/02/1994', // Example Date of Birth
+            gender: 'Male', // Example Gender
         },
         {
-          id: '#1238',
-          name: 'Lily',
-          email: 'xterris@gmail.com',
-          contact: '(+33) 70 05 58 27',
-          location: 'Great Falls, Maryland',
-          image: 'https://via.placeholder.com/32',
-        },
-        {
-          id: '#1237',
-          name: 'Kathry',
-          email: 'imabela@gmail.com',
-          contact: '(+33) 70 05 55 27',
-          location: 'Syracuse, Connecticut',
-          image: 'https://via.placeholder.com/32',
-        },
-        {
-          id: '#1236',
-          name: 'Priscilia',
-          email: 'codence@gmail.com',
-          contact: '(+33) 70 05 56 27',
-          location: 'Lafayette, California',
-          image: 'https://via.placeholder.com/32',
+            id: '#1238',
+            name: 'Lily',
+            email: 'xterris@gmail.com',
+            contact: '(+33) 70 05 58 27',
+            location: 'Great Falls, Maryland',
+            image: 'https://via.placeholder.com/32', // Replace with actual image URLs
+            dob: '22/08/1988',
+            gender: 'Female',
         },
         {
             id: '#1239',
@@ -41,99 +31,109 @@ const UserTable = () => {
             email: 'm101@gmail.ru',
             contact: '(+33) 70 05 56 27',
             location: 'Corona, Michigan',
-            image: 'https://via.placeholder.com/32',
-          },
-          {
+            image: 'https://via.placeholder.com/32', // Replace with actual image URLs
+            dob: '17/02/1994', // Example Date of Birth
+            gender: 'Male', // Example Gender
+        },
+        {
             id: '#1238',
             name: 'Lily',
             email: 'xterris@gmail.com',
             contact: '(+33) 70 05 58 27',
             location: 'Great Falls, Maryland',
-            image: 'https://via.placeholder.com/32',
-          },
-          {
-            id: '#1237',
-            name: 'Kathry',
-            email: 'imabela@gmail.com',
-            contact: '(+33) 70 05 55 27',
-            location: 'Syracuse, Connecticut',
-            image: 'https://via.placeholder.com/32',
-          },
-          {
-            id: '#1236',
-            name: 'Priscilia',
-            email: 'codence@gmail.com',
-            contact: '(+33) 70 05 56 27',
-            location: 'Lafayette, California',
-            image: 'https://via.placeholder.com/32',
-          },
-          {
+            image: 'https://via.placeholder.com/32', // Replace with actual image URLs
+            dob: '22/08/1988',
+            gender: 'Female',
+        },
+        {
             id: '#1239',
             name: 'Mr. Mahmud',
             email: 'm101@gmail.ru',
             contact: '(+33) 70 05 56 27',
             location: 'Corona, Michigan',
-            image: 'https://via.placeholder.com/32',
-          },
-          {
+            image: 'https://via.placeholder.com/32', // Replace with actual image URLs
+            dob: '17/02/1994', // Example Date of Birth
+            gender: 'Male', // Example Gender
+        },
+        {
             id: '#1238',
             name: 'Lily',
             email: 'xterris@gmail.com',
             contact: '(+33) 70 05 58 27',
             location: 'Great Falls, Maryland',
-            image: 'https://via.placeholder.com/32',
-          },
-          {
-            id: '#1237',
-            name: 'Kathry',
-            email: 'imabela@gmail.com',
-            contact: '(+33) 70 05 55 27',
-            location: 'Syracuse, Connecticut',
-            image: 'https://via.placeholder.com/32',
-          },
-          {
-            id: '#1236',
-            name: 'Priscilia',
-            email: 'codence@gmail.com',
+            image: 'https://via.placeholder.com/32', // Replace with actual image URLs
+            dob: '22/08/1988',
+            gender: 'Female',
+        },
+        {
+            id: '#1239',
+            name: 'Mr. Mahmud',
+            email: 'm101@gmail.ru',
             contact: '(+33) 70 05 56 27',
-            location: 'Lafayette, California',
-            image: 'https://via.placeholder.com/32',
-          },
+            location: 'Corona, Michigan',
+            image: 'https://via.placeholder.com/32', // Replace with actual image URLs
+            dob: '17/02/1994', // Example Date of Birth
+            gender: 'Male', // Example Gender
+        },
+        {
+            id: '#1238',
+            name: 'Lily',
+            email: 'xterris@gmail.com',
+            contact: '(+33) 70 05 58 27',
+            location: 'Great Falls, Maryland',
+            image: 'https://via.placeholder.com/32', // Replace with actual image URLs
+            dob: '22/08/1988',
+            gender: 'Female',
+        },
+        {
+            id: '#1239',
+            name: 'Mr. Mahmud',
+            email: 'm101@gmail.ru',
+            contact: '(+33) 70 05 56 27',
+            location: 'Corona, Michigan',
+            image: 'https://via.placeholder.com/32', // Replace with actual image URLs
+            dob: '17/02/1994', // Example Date of Birth
+            gender: 'Male', // Example Gender
+        },
+        {
+            id: '#1238',
+            name: 'Lily',
+            email: 'xterris@gmail.com',
+            contact: '(+33) 70 05 58 27',
+            location: 'Great Falls, Maryland',
+            image: 'https://via.placeholder.com/32', // Replace with actual image URLs
+            dob: '22/08/1988',
+            gender: 'Female',
+        },
+        // ... more users
     ]);
 
+    const [isOpen, setIsOpen] = useState(false);
+    const [selectedUser, setSelectedUser] = useState(null);
 
-    const [searchTerm, setSearchTerm] = useState('');
-    const [currentPage, setCurrentPage] = useState(1);
-    const usersPerPage = 10;
-
-    const filteredUsers = users.filter((user) =>
-        Object.values(user).some((value) =>
-            value.toString().toLowerCase().includes(searchTerm.toLowerCase())
-        )
-    );
-
-    const indexOfLastUser = currentPage * usersPerPage;
-    const indexOfFirstUser = indexOfLastUser - usersPerPage;
-    const currentUsers = filteredUsers.slice(indexOfFirstUser, indexOfLastUser);
-
-    const totalPages = Math.ceil(filteredUsers.length / usersPerPage);
-
-    const handlePageChange = (pageNumber) => {
-        setCurrentPage(pageNumber);
+    const openModal = (user) => {
+        setSelectedUser(user);
+        setIsOpen(true);
     };
+
+    const closeModal = () => {
+        setIsOpen(false);
+        setSelectedUser(null);
+    };
+
+    // Define the fields you want to display dynamically
+    const userFields = [
+        { label: 'Name', value: selectedUser?.name },
+        { label: 'Email', value: selectedUser?.email },
+        { label: 'Address', value: selectedUser?.location },
+        { label: 'Contact No', value: selectedUser?.contact },
+        { label: 'Date of Birth', value: selectedUser?.dob || 'N/A' },
+        { label: 'Gender', value: selectedUser?.gender || 'N/A' }
+    ];
 
     return (
         <div className="mx-auto p-4 border-t-4 border-pink-400 bg-white rounded-md shadow-md">
-            <div className="flex justify-between items-center mb-4">
-                <h2 className="text-xl font-bold">All user details</h2>
-                <input
-                    type="text"
-                    placeholder="Search..."
-                    value={searchTerm}
-                    onChange={(e) => setSearchTerm(e.target.value)}
-                    className="border border-gray-300 rounded-md px-3 py-1 focus:outline-none focus:ring-2 focus:ring-pink-500"
-                />
-            </div>
+            <h2 className="text-xl font-bold mb-4">All user details</h2>
             <table className="w-full border-collapse text-sm">
                 <thead>
                     <tr className="bg-[#FEF1E6] text-left">
@@ -146,7 +146,7 @@ const UserTable = () => {
                     </tr>
                 </thead>
                 <tbody>
-                    {currentUsers.map((user, index) => (
+                    {users.map((user, index) => (
                         <tr key={index} className={index % 2 === 0 ? 'bg-gray-50' : ''}>
                             <td className="px-4 py-2">{user.id}</td>
                             <td className="px-4 py-2 flex items-center">
@@ -157,54 +157,45 @@ const UserTable = () => {
                             <td className="px-4 py-2">{user.contact}</td>
                             <td className="px-4 py-2">{user.location}</td>
                             <td className="px-4 text-center">
-                                <img src={action} alt="action" />
+                                <img src={action} alt="action" onClick={() => openModal(user)} className="cursor-pointer" />
                             </td>
                         </tr>
                     ))}
                 </tbody>
             </table>
 
-        {/* Pagination with the specified design */}
-        <div className="mt-4 flex justify-between items-center">
-                <div className="text-sm text-gray-500">
-                    Showing {indexOfFirstUser + 1}-{Math.min(indexOfLastUser, filteredUsers.length)} out of {filteredUsers.length}
+            {/* Modal Dialog */}
+            <Dialog open={isOpen} onClose={closeModal} className="fixed inset-0 flex items-center justify-center bg-black bg-opacity-50 z-50">
+    <div className="bg-white p-6 rounded-md shadow-lg relative w-96">
+        <AiOutlineClose className="absolute top-2 right-2 text-gray-600 cursor-pointer" size={24} onClick={closeModal} />
+        {selectedUser && (
+            <div className="flex flex-col">
+                {/* Profile Section - Centering Avatar and Name */}
+                <div className="flex flex-col items-center mb-4 text-center">
+                    <img src={selectedUser.image} alt="Avatar" className="rounded-full h-16 w-16" />
+                    <div>
+                        <h2 className="text-xl font-bold">{selectedUser.name}</h2>
+                    </div>
                 </div>
-                <div className="flex items-center space-x-2">
-                    <button
-                        onClick={() => handlePageChange(currentPage - 1)}
-                        disabled={currentPage === 1}
-                        className="px-3 py-1 rounded-md bg-gray-200 hover:bg-gray-300 disabled:bg-gray-100 text-gray-700"
-                    >
-                        <svg xmlns="http://www.w3.org/2000/svg" className="h-4 w-4" fill="none" viewBox="0 0 24 24" stroke="currentColor">
-                            <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2} d="M15 19l-7-7 7-7" />
-                        </svg>
-                    </button>
 
-                    {/* Page Numbers */}
-                    {Array.from({ length: totalPages }, (_, i) => (
-                        <button
-                            key={i}
-                            onClick={() => handlePageChange(i + 1)}
-                            className={`px-3 py-1 rounded-md ${
-                                currentPage === i + 1 ? 'bg-pink-500 text-white' : 'bg-gray-200 hover:bg-gray-300 text-gray-700'
-                            }`}
-                        >
-                            {i + 1}
-                        </button>
+                {/* Loop through the fields dynamically */}
+                <div className="grid gap-4">
+                    {userFields.map((field, index) => (
+                        <div key={index}>
+                            <p className="font-medium">{field.label}</p>
+                            <p className="text-xs">{field.value}</p>
+                        </div>
                     ))}
+                </div>
 
-                    <button
-                        onClick={() => handlePageChange(currentPage + 1)}
-                        disabled={currentPage === totalPages}
-                        className="px-3 py-1 rounded-md bg-gray-200 hover:bg-gray-300 disabled:bg-gray-100 text-gray-700"
-                    >
-                         <svg xmlns="http://www.w3.org/2000/svg" className="h-4 w-4" fill="none" viewBox="0 0 24 24" stroke="currentColor">
-                            <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2} d="M9 5l7 7-7 7" />
-                        </svg>
-                    </button>
+                <div className="mt-4">
+                    <a href="#" className="text-pink-500 hover:underline">More</a>
                 </div>
             </div>
-            {/* End of Pagination */}
+        )}
+    </div>
+</Dialog>
+
         </div>
     );
 };
