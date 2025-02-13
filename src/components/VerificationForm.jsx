@@ -1,67 +1,117 @@
-import  { useState } from 'react';
+import { useForm } from 'react-hook-form';
+import  { useRef, useEffect } from 'react';
+import { useNavigate, useParams } from 'react-router-dom';
+import { useResendVerificationCodeMutation, useVerifyOTPMutation } from '../redux/api/auth/authApi';
+import { toast } from 'react-toastify';
 
 const VerificationForm = () => {
-  const [code, setCode] = useState(['', '', '', '', '']);
+  const { register, handleSubmit, setValue, watch, formState: { errors }, setFocus } = useForm({
+    defaultValues: { code: ['', '', '', '', ''] }
+  });
 
+  const [verifyOTP, { isLoading }] = useVerifyOTPMutation();
+  const [resendVerificationCode] = useResendVerificationCodeMutation();
+
+  const navigate = useNavigate();
+  const inputsRef = useRef([]);
+
+  const codeValues = watch("code") || ['','','','','']; // Ensure codeValues is always an array
+  const param = useParams();
+  const email = param.email;
   const handleChange = (index, event) => {
-    const newCode = [...code];
-    newCode[index] = event.target.value;
-    setCode(newCode);
+    const value = event.target.value;
+    if (!/^\d?$/.test(value)) return; // Only allow single digits
 
-    // Focus on the next input if a number is entered
-    if (event.target.value && index < 4) {
-      const nextInput = event.target.nextElementSibling;
-      if (nextInput) {
-        nextInput.focus();
-      }
+    const newCode = [...codeValues];
+    newCode[index] = value;
+    setValue("code", newCode);
+
+    if (value && index < 4) {
+      inputsRef.current[index + 1]?.focus();
     }
   };
 
-  const handleSubmit = (e) => {
-    e.preventDefault();
-    const enteredCode = code.join(''); // Combine the code digits
-    console.log("Entered Code:", enteredCode);
-    // Handle form submission here (e.g., send data to API)
+  const handleKeyDown = (index, event) => {
+    if (event.key === 'Backspace' && !codeValues[index] && index > 0) {
+      inputsRef.current[index - 1]?.focus();
+    }
   };
+
+  const onSubmit = async (data) => {
+    const code = data.code.join('');
+    console.log('Verification Code:', code);
+
+    try {
+      const result = await verifyOTP({ email, code }).unwrap();
+      console.log("Verified Res", result);
+      toast.success("OTP verified successfully!");
+      navigate('/dashboard'); // Adjust navigation as needed
+    } catch (error) {
+      console.log(error);
+      toast.error(error?.data?.message || "Invalid OTP, please try again.");
+    }
+  };
+
+  const onResend = async () => {
+    try {
+      await resendVerificationCode({ email }).unwrap();
+      toast.success("Verification code sent to your email!");
+    } catch (error) {
+      console.log(error);
+      toast.error(error?.data?.message || "Failed to resend OTP. Please try again.");
+    }
+  };
+
+  useEffect(() => {
+    setFocus("code.0");
+  }, [setFocus]);
 
   return (
     <div className="flex justify-center items-center h-screen bg-gray-100">
       <div className="bg-white p-8 rounded-lg shadow-md w-96">
-        <h2 className="text-2xl font-bold mb-4 text-center">Verification code</h2>
+        <h2 className="text-2xl font-bold mb-4 text-center">Verification Code</h2>
         <p className="text-gray-600 mb-6 text-center">
-          We sent a reset link to contact@ascode..com <br />
-          enter 5 digit code that is mentioned in the email
+          We sent a reset link to your {param?.email}.<br />
+          Enter the 5-digit code mentioned in the email.
         </p>
 
-        <form onSubmit={handleSubmit}>
-          <div className="flex space-x-4 mb-6">
-            {code.map((digit, index) => (
+        <form onSubmit={handleSubmit(onSubmit)}>
+          <div className="flex justify-center space-x-4 mb-6">
+            {codeValues.map((digit, index) => (
               <input
                 key={index}
-                type="number"
-                maxLength="1"
+                type="text"
+                {...register(`code.${index}`, { required: true })}
                 value={digit}
                 onChange={(event) => handleChange(index, event)}
-                className="border border-gray-300 rounded-md px-4 py-2 w-16 text-center focus:outline-none focus:ring-2 focus:ring-blue-500"
-                required
-                ref={(input) => {
-                  if (index === 0) {
-                    input && input.focus(); // Focus on the first input on mount
-                  }
-                }}
+                onKeyDown={(event) => handleKeyDown(index, event)}
+                className="border border-gray-300 rounded-md px-4 py-2 w-14 h-14 text-center text-xl focus:outline-none focus:ring-2 focus:ring-blue-500"
+                maxLength={1}
+                ref={(el) => (inputsRef.current[index] = el)}
+                autoFocus={index === 0}
               />
             ))}
           </div>
 
+          {errors.code && <p className="text-red-500 text-center">Please enter all 5 digits.</p>}
+
           <button
             type="submit"
             className="bg-pink-500 hover:bg-pink-700 text-white font-bold py-2 px-4 rounded-md w-full focus:outline-none focus:ring-2 focus:ring-pink-300"
+            disabled={codeValues.includes('')}
           >
-           <a href="/set-new-password-form"> Verify Code</a>
+            {isLoading ? "Verifying..." : "Verify Code"}
           </button>
 
           <p className="mt-4 text-center text-gray-600">
-            You have not received the email? <a href="#" className="text-green-500 hover:underline">Resend</a>
+            Didn&lsquo;t receive the email?{' '}
+            <button
+              type="button"
+              className="text-green-500 hover:underline"
+              onClick={onResend}
+            >
+              Resend
+            </button>
           </p>
         </form>
       </div>

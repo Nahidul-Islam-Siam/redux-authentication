@@ -52,5 +52,5 @@ const authApi = baseApi.injectEndpoints({
 })
 
 
-export const { useSingupMutation, useLoginMutation, useVerifyEmailMutation, resendCodeData, useSendForgetPasswordOTPMutation, useVerifyOTPMutation } = authApi;
+export const { useSingupMutation, useLoginMutation, useVerifyEmailMutation, resendCodeData, useSendForgetPasswordOTPMutation, useVerifyOTPMutation,  useResendVerificationCodeMutation } = authApi;
 export default authApi;

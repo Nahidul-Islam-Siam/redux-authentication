@@ -7,7 +7,7 @@ import { toast } from "react-toastify";
 import { useSingupMutation } from "../redux/api/auth/authApi";
 
 
-export default function SignUpForm() {
+const SignUpForm = () => {
     const navigate = useNavigate();
     const [showPassword, setShowPassword] = useState(false);
     const [showConfirmPassword, setShowConfirmPassword] = useState(false);
@@ -33,7 +33,7 @@ export default function SignUpForm() {
             const res = await singup(data).unwrap();
             console.log("Registration successful!", res);
 
-            toast("User Register Sucessfully");
+            toast("Registration Sucessfully");
 
             navigate("/login")
         } catch (err) {
@@ -44,7 +44,7 @@ export default function SignUpForm() {
 
     return (
         <div className="flex items-center justify-center min-h-screen bg-gray-100 p-4">
-            <div className="bg-white px-14 py-10 rounded-lg shadow-md w-full max-w-md">
+            <div className="bg-white px-14 py-10 rounded-lg shadow-md w-full max-w-xl">
                 <h2 className="text-2xl font-semibold text-center mb-4">Sign Up to Your Account</h2>
                 <p className="text-center text-gray-500 mb-6">Please Enter Your Personal Data</p>
 
@@ -129,3 +129,6 @@ export default function SignUpForm() {
         </div>
     );
 }
+
+
+export default SignUpForm;
