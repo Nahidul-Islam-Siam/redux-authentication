@@ -9,6 +9,9 @@ const VerificationForm = () => {
     defaultValues: { code: ['', '', '', '', ''] }
   });
 
+
+
+
   const [verifyOTP, { isLoading }] = useVerifyOTPMutation();
   const [resendVerificationCode] = useResendVerificationCodeMutation();
 
@@ -18,6 +21,9 @@ const VerificationForm = () => {
   const codeValues = watch("code") || ['','','','','']; // Ensure codeValues is always an array
   const param = useParams();
   const email = param.email;
+
+
+  console.log(email, codeValues);
   const handleChange = (index, event) => {
     const value = event.target.value;
     if (!/^\d?$/.test(value)) return; // Only allow single digits
