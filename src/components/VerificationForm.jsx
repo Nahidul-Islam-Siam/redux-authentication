@@ -23,7 +23,7 @@ const VerificationForm = () => {
   const email = param.email;
 
 
-  console.log(email, codeValues);
+  console.log(email);
   const handleChange = (index, event) => {
     const value = event.target.value;
     if (!/^\d?$/.test(value)) return; // Only allow single digits

@@ -28,17 +28,19 @@ const SignUpForm = () => {
         setShowConfirmPassword(!showConfirmPassword);
     };
 
+    
     const onSubmit = async (data) => {
         try {
             const res = await singup(data).unwrap();
             console.log("Registration successful!", res);
-
-            toast("Registration Sucessfully");
-
-            navigate("/login")
+    
+            toast.success("Registration Successfully");
+    
+            // Navigate to verification form with email as a URL parameter
+            navigate(`/verification-form/${data.email}`);
         } catch (err) {
             console.error("Registration failed:", err);
-            toast.error(error.message )
+            toast.error(err?.data?.message || "Signup failed, please try again.");
         }
     };
 

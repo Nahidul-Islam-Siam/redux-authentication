@@ -9,6 +9,7 @@ import {
 import router from './route/router';
 import { Provider } from 'react-redux'
 import store from './redux/store';
+import { ToastContainer } from 'react-toastify';
 
 
 createRoot(document.getElementById('root')).render(
@@ -16,6 +17,7 @@ createRoot(document.getElementById('root')).render(
  
   <Provider store={store}>
   <RouterProvider router={router} />
+  <ToastContainer />
   </Provider>
   </StrictMode>,
 )

@@ -29,7 +29,7 @@ const router = createBrowserRouter([
         element: <ForgotPasswordForm />,
       },
       {
-        path: "verification-form",  
+        path: "verification-form/:email", 
         element: <VerificationForm />,
       },
       {
