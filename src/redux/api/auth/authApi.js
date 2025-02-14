@@ -65,6 +65,57 @@ export const authApi = createApi({
                 body: credentials
             }),
         }),
+        adminLogin: builder.mutation({
+            query: (credentials) => ({
+                url: "/auth/admin/login",
+                method: "POST",
+                body: credentials
+            })
+        }),
+
+        updateAdminProfilePicture: builder.mutation({
+            query: ({ _id, formData }) => ({
+                url: `/admin/update/profile-picture/${_id}`,
+                method: "PATCH",
+                body: formData
+            })
+        }),
+
+        editAdminProfile: builder.mutation({
+            query: ({ _id, data }) => ({
+                url: `/admin/update/${_id}`,
+                method: "PATCH",
+                headers: {
+                    Authorization: `Bearer ${localStorage.getItem('token')}`
+                },
+                body: data
+            })
+        }),
+
+        changeAdminPassword: builder.mutation({
+            query: (credentials) => ({
+                url: "/auth/admin/change-password",
+                method: "POST",
+                body: credentials
+            })
+        }),
+
+        getAllUsers: builder.query({
+            query: ({ query, page, limit }) => ({
+                url: `/user/retrive/all?query=${query}&page=${page}&limit=${limit}`,
+                method: "GET"
+            })
+        }),
+
+        getDashboardMetrics: builder.query({
+            query: () => ({
+                url: "/dashboard/metrixs/retrive",
+                method: "GET",
+                headers: {
+                    Authorization: `Bearer ${localStorage.getItem('token')}`
+                }
+            })
+        })
     }),
 });
 
@@ -76,5 +127,11 @@ export const {
     useVerifyOTPMutation,
     useResendVerificationCodeMutation,
     useForgotPasswordMutation,
-    useResetPasswordMutation
+    useResetPasswordMutation,
+    useAdminLoginMutation,
+    useUpdateAdminProfilePictureMutation,
+    useEditAdminProfileMutation,
+    useChangeAdminPasswordMutation,
+    useGetAllUsersQuery,
+    useGetDashboardMetricsQuery
 } = authApi;

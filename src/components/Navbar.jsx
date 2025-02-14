@@ -4,6 +4,8 @@ import { useDispatch } from 'react-redux';
 import { Link, useNavigate } from 'react-router-dom';
 import Cookies from 'js-cookie';
 
+import avatar from "../assets/a1.png"
+
 const Navbar = () => {
   const dispatch = useDispatch();
   const navigate = useNavigate();
@@ -48,12 +50,12 @@ const Navbar = () => {
     <div className="bg-pink-600 p-4 flex justify-between items-center text-white rounded-lg mb-6">
       <h1 className="text-2xl font-bold"> <a href="/dashboard">STA Task</a> </h1>
       <div className="flex items-center">
-        <span className="mr-2">Welcome, {userData?.fullName || 'User'}</span>
+        <span className="mr-2">Welcome, {userData?.fullName || 'Admin Maria'}</span>
         <Menu as="div" className="relative">
           <div>
             <Menu.Button className="w-10 h-10 bg-white rounded-full flex items-center justify-center">
               <img 
-                src="https://via.placeholder.com/40"
+                src={avatar}
                 alt="Profile" 
                 className="w-8 h-8 rounded-full"
               />

@@ -37,8 +37,9 @@ const SignUpForm = () => {
     
             toast.success("Registration Successfully");
     
-            // Navigate to verification form with email as a URL parameter
-            navigate(`/verification-form/${data.email}`);
+            // navigate(`/verification-form/${data.email}`);
+            
+            navigate(`/login`);
         } catch (err) {
             console.error("Registration failed:", err);
             toast.error(err?.data?.message || "Signup failed, please try again.");
