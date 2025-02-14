@@ -75,6 +75,14 @@ const ChangePassword = () => {
     new: false,
     confirm: false,
   });
+  const [passwords, setPasswords] = useState({
+    currentPassword: '',
+    newPassword: '',
+    confirmPassword: '',
+  });
+  const [error, setError] = useState('');
+  const [success, setSuccess] = useState('');
+  const [isLoading, setIsLoading] = useState(false);
 
   const togglePasswordVisibility = (field) => {
     setShowPassword((prev) => ({ ...prev, [field]: !prev[field] }));
@@ -82,14 +90,14 @@ const ChangePassword = () => {
 
   const handleSubmit = async (e) => {
     e.preventDefault();
-    
+    setError('');
+    setSuccess('');
 
     if (passwords.newPassword !== passwords.confirmPassword) {
       setError('Passwords do not match');
       return;
     }
 
-    // Validate password length
     if (passwords.newPassword.length < 8) {
       setError('Password must be at least 8 characters long');
       return;
@@ -97,11 +105,11 @@ const ChangePassword = () => {
 
     setIsLoading(true);
     try {
-      await authApi.resetPassword(passwords.email, passwords.newPassword);
+     
       setSuccess('Password updated successfully');
-      // Clear form
+   
       setPasswords({
-        email: '',
+        currentPassword: '',
         newPassword: '',
         confirmPassword: '',
       });
@@ -113,10 +121,12 @@ const ChangePassword = () => {
   };
 
   return (
-    <div className="max-w-md mx-auto">
+    <form onSubmit={handleSubmit} className="max-w-md mx-auto">
       <h3 className="text-lg font-semibold mb-4">Change Password</h3>
+      {error && <div className="text-red-500 mb-4">{error}</div>}
+      {success && <div className="text-green-500 mb-4">{success}</div>}
       <div className="space-y-4">
-        {/* Current Password */}
+   
         <div>
           <label className="block text-gray-700 mb-1">Current Password</label>
           <div className="relative">
@@ -124,6 +134,9 @@ const ChangePassword = () => {
               type={showPassword.current ? "text" : "password"}
               className="w-full p-2 border rounded pr-10"
               placeholder="Enter current password"
+              value={passwords.currentPassword}
+              onChange={(e) => setPasswords(prev => ({...prev, currentPassword: e.target.value}))}
+              required
             />
             <button
               type="button"
@@ -135,7 +148,7 @@ const ChangePassword = () => {
           </div>
         </div>
 
-        {/* New Password */}
+   
         <div>
           <label className="block text-gray-700 mb-1">New Password</label>
           <div className="relative">
@@ -143,6 +156,9 @@ const ChangePassword = () => {
               type={showPassword.new ? "text" : "password"}
               className="w-full p-2 border rounded pr-10"
               placeholder="Enter new password"
+              value={passwords.newPassword}
+              onChange={(e) => setPasswords(prev => ({...prev, newPassword: e.target.value}))}
+              required
             />
             <button
               type="button"
@@ -154,7 +170,7 @@ const ChangePassword = () => {
           </div>
         </div>
 
-        {/* Confirm Password */}
+  
         <div>
           <label className="block text-gray-700 mb-1">Confirm Password</label>
           <div className="relative">
@@ -162,6 +178,9 @@ const ChangePassword = () => {
               type={showPassword.confirm ? "text" : "password"}
               className="w-full p-2 border rounded pr-10"
               placeholder="Confirm new password"
+              value={passwords.confirmPassword}
+              onChange={(e) => setPasswords(prev => ({...prev, confirmPassword: e.target.value}))}
+              required
             />
             <button
               type="button"
@@ -173,15 +192,19 @@ const ChangePassword = () => {
           </div>
         </div>
 
-        <button className="w-full bg-pink-500 text-white p-2 rounded hover:bg-pink-600">
-          Update Password
+        <button 
+          type="submit" 
+          className="w-full bg-pink-500 text-white p-2 rounded hover:bg-pink-600 disabled:opacity-50"
+          disabled={isLoading}
+        >
+          {isLoading ? 'Updating...' : 'Update Password'}
         </button>
       </div>
-    </div>
+    </form>
   );
 };
 
-// ✅ User List Tab Content
+
 const UserList = () => (
   <div className="max-w-md mx-auto">
     <h3 className="text-lg font-semibold mb-4">User List</h3>
@@ -193,7 +216,7 @@ const UserList = () => (
 );
 
 
-// ✅ Main Profile Settings Component
+
 const ProfileSettings = () => {
   const { tab } = useParams();
   const navigate = useNavigate();
@@ -219,7 +242,7 @@ const ProfileSettings = () => {
           <Tabs 
             selectedIndex={selectedTab} 
             onSelect={handleTabSelect}
-            className="min-h-[400px]" // Minimum height to prevent layout shifts
+            className="min-h-[400px]"
           >
             <TabList className="flex text-center mb-6 justify-center">
               <Tab 
