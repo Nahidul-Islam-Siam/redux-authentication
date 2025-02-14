@@ -5,7 +5,8 @@ import { useNavigate, useParams } from "react-router-dom";
 import "react-tabs/style/react-tabs.css";
 import { AiOutlineEye, AiOutlineEyeInvisible } from "react-icons/ai";
 
-// ✅ Profile Header Component (Shows User Info)
+
+
 
 
 const ProfileHeader = ({ name }) => (
@@ -29,7 +30,7 @@ ProfileHeader.propTypes = {
 };
 
 
-// ✅ Edit Profile Tab Content
+
 const EditProfile = ({ name, setName, contact, setContact }) => (
   <div className="max-w-md mx-auto">
     <h3 className="text-lg font-semibold mb-4">Edit Your Profile</h3>
@@ -67,7 +68,7 @@ EditProfile.propTypes = {
   setContact: PropTypes.func.isRequired,
 };
 
-// ✅ Change Password Tab Content
+
 const ChangePassword = () => {
   const [showPassword, setShowPassword] = useState({
     current: false,
@@ -77,6 +78,38 @@ const ChangePassword = () => {
 
   const togglePasswordVisibility = (field) => {
     setShowPassword((prev) => ({ ...prev, [field]: !prev[field] }));
+  };
+
+  const handleSubmit = async (e) => {
+    e.preventDefault();
+    
+
+    if (passwords.newPassword !== passwords.confirmPassword) {
+      setError('Passwords do not match');
+      return;
+    }
+
+    // Validate password length
+    if (passwords.newPassword.length < 8) {
+      setError('Password must be at least 8 characters long');
+      return;
+    }
+
+    setIsLoading(true);
+    try {
+      await authApi.resetPassword(passwords.email, passwords.newPassword);
+      setSuccess('Password updated successfully');
+      // Clear form
+      setPasswords({
+        email: '',
+        newPassword: '',
+        confirmPassword: '',
+      });
+    } catch (err) {
+      setError(err.message || 'An error occurred. Please try again.');
+    } finally {
+      setIsLoading(false);
+    }
   };
 
   return (

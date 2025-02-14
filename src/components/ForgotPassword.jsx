@@ -1,11 +1,10 @@
 import { useForm } from 'react-hook-form';
 import { Link, useNavigate } from 'react-router-dom';
 import { toast } from 'react-toastify';
-import { useForgotPasswordMutation, useSendForgetPasswordOTPMutation } from '../redux/api/auth/authApi';
+import { useSendForgetPasswordOTPMutation } from '../redux/api/auth/authApi';
 
 const ForgotPassword = () => {
-  const [forgotPassword, { isLoading }] = useForgotPasswordMutation();
-  const [sendForgetPasswordOTP] = useSendForgetPasswordOTPMutation();
+  const [sendForgetPasswordOTP, { isLoading }] = useSendForgetPasswordOTPMutation();
   const navigate = useNavigate();
   
   const {

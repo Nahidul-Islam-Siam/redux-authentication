@@ -1,5 +1,6 @@
 import baseApi from "../baseApi";
 
+const BASE_URL = '/auth';
 
 const authApi = baseApi.injectEndpoints({
     endpoints: (builder) => ({
@@ -51,15 +52,22 @@ const authApi = baseApi.injectEndpoints({
         }),
         forgotPassword: builder.mutation({
             query: (credentials) => ({
-                url: "/auth/forget-password/send-otp",  // Updated the correct endpoint
+                url: "/auth/forget-password/send-otp", 
                 method: "POST",
              
+                body: credentials,
+                
+            }),
+        }),
+        resetPassword: builder.mutation({
+            query: (credentials) => ({
+                url: ` /auth/reset-password`,  
+                method: "POST",
                 body: credentials,
             }),
         }),
     }),
 })
 
-
-export const { useSingupMutation, useLoginMutation, useVerifyEmailMutation, resendCodeData, useSendForgetPasswordOTPMutation, useVerifyOTPMutation,  useResendVerificationCodeMutation, useForgotPasswordMutation } = authApi;
+export const { useSingupMutation, useLoginMutation, useVerifyEmailMutation, resendCodeData, useSendForgetPasswordOTPMutation, useVerifyOTPMutation,  useResendVerificationCodeMutation, useForgotPasswordMutation, useResetPasswordMutation } = authApi;
 export default authApi;
