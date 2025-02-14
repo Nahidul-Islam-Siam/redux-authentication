@@ -4,7 +4,7 @@ export const getUserInfo = () => {
   
   try {
     return JSON.parse(userStr);
-  } catch (_) {
+  } catch {
     return null;
   }
 };

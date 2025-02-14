@@ -16,7 +16,7 @@ const ForgotPasswordForm = () => {
       if ('data' in response) {
         setMessage('OTP has been sent to your email');
         setEmail('');
-        // You might want to redirect to OTP verification page here
+  
       } else if ('error' in response) {
         setMessage(response.error?.data?.message || 'Something went wrong. Please try again.');
       }
