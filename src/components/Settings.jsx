@@ -4,6 +4,7 @@ import { Tab, Tabs, TabList, TabPanel } from "react-tabs";
 import { useNavigate, useParams } from "react-router-dom";
 import "react-tabs/style/react-tabs.css";
 import { AiOutlineEye, AiOutlineEyeInvisible } from "react-icons/ai";
+import { motion } from "framer-motion";
 
 
 
@@ -12,11 +13,13 @@ import { AiOutlineEye, AiOutlineEyeInvisible } from "react-icons/ai";
 const ProfileHeader = ({ name }) => (
   <div className="bg-pink-500 w-full flex flex-col items-center p-6 rounded-lg text-white mb-6">
     <div className="flex items-center gap-4">
-      <img
-        src="https://via.placeholder.com/80"
-        alt="Profile"
-        className="w-16 h-16 rounded-full border-4 border-white"
-      />
+      <div className="w-20 h-20 rounded-full border-4 border-white overflow-hidden">
+        <img
+          src="https://api.dicebear.com/7.x/micah/svg?backgroundColor=b6e3f4"
+          alt="Profile"
+          className="w-full h-full object-cover"
+        />
+      </div>
       <div>
         <h2 className="text-xl font-semibold">{name}</h2>
         <span className="text-sm">Admin</span>
@@ -233,9 +236,35 @@ const ProfileSettings = () => {
     navigate(index === 1 ? '/setting/edit-profile' : '/setting');
   };
 
+  const settingsVariants = {
+    initial: { opacity: 0, y: 20 },
+    animate: { 
+      opacity: 1, 
+      y: 0,
+      transition: { duration: 0.5 }
+    }
+  };
+
+  const tabVariants = {
+    initial: { opacity: 0, y: 10 },
+    animate: { 
+      opacity: 1, 
+      y: 0,
+      transition: { type: "spring", stiffness: 100 }
+    }
+  };
+
   return (
-    <div className="min-h-[calc(100vh-theme(spacing.16))] p-6">
-      <div className="max-w-2xl mx-auto bg-white rounded-lg shadow-md">
+    <motion.div
+      variants={settingsVariants}
+      initial="initial"
+      animate="animate"
+      className="min-h-[calc(100vh-theme(spacing.16))] p-6"
+    >
+      <motion.div 
+        variants={tabVariants}
+        className="max-w-2xl mx-auto bg-white rounded-lg shadow-md"
+      >
         <div className="p-6">
           <ProfileHeader name="John Doe" />
           
@@ -288,8 +317,8 @@ const ProfileSettings = () => {
             </div>
           </Tabs>
         </div>
-      </div>
-    </div>
+      </motion.div>
+    </motion.div>
   );
 };
 

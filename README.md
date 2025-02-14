@@ -1,39 +1,50 @@
-# Redux Authentication Demo
+# Redux-Authentication Task
 
-A React + Vite application demonstrating user authentication using Redux Toolkit. View the live demo at [redux-authentication-gray.vercel.app](https://redux-authentication-gray.vercel.app/)
+A React application demonstrating user authentication using Redux Toolkit, built based on the provided Figma design and API documentation.
 
 ## Features
 
 - 🔐 Complete authentication flow
 - 🔄 Redux Toolkit for state management
-- ⚡️ Built with Vite for optimal performance
-- 🎨 Clean and responsive UI
+- ⚡️ Optimized performance with React and Vite
+- 🎨 Responsive UI following the Figma design
 - 🛡️ Protected routes implementation
+- 🌐 API integration using Redux Toolkit Async Thunks
+- 🚀 Efficient client-side rendering
 
 ## Tech Stack
 
-- React 18
-- Redux Toolkit
-- Vite
-- React Router DOM
-- ESLint
+- **Framework**: React.js
+- **State Management**: Redux Toolkit (RTK)
+- **API Handling**: Axios / Fetch API
+- **Styling**: Tailwind CSS / Styled Components
 
 ## Getting Started
 
 1. Clone the repository:
+
    ```bash
    git clone https://github.com/Nahidul-Islam-Siam/redux-authentication.git
    ```
 
 2. Install dependencies:
+
    ```bash
    npm install
    ```
 
 3. Start the development server:
+
    ```bash
    npm run dev
    ```
+
+## API Integration with Redux Toolkit
+
+- Implement API calls using Redux Toolkit Async Thunks
+- Fetch and store data in the Redux state
+- Handle loading and error states properly
+- Implement functionalities such as fetching, displaying, and interacting with data
 
 ## Available Scripts
 
@@ -50,8 +61,21 @@ src/
 ├── features/       # Redux slices and features
 ├── pages/         # Application pages
 ├── store/         # Redux store configuration
-└── utils/         # Utility functions
+├── utils/         # Utility functions
 ```
+
+## Deployment (Optional)
+
+If time permits, deploy the project to Vercel using the following steps:
+
+1. Build the project:
+   ```bash
+   npm run build
+   ```
+2. Deploy to Vercel:
+   ```bash
+   vercel
+   ```
 
 ## Contributing
 
@@ -63,10 +87,8 @@ src/
 
 ## Learn More
 
-- [Redux Toolkit Documentation](https://redux-toolkit.js.org/)
-- [Vite Documentation](https://vitejs.dev/)
 - [React Documentation](https://react.dev/)
+- [Redux Toolkit Documentation](https://redux-toolkit.js.org/)
+- [Tailwind CSS Documentation](https://tailwindcss.com/)
 
-## License
 
-This project is open source and available under the MIT License.

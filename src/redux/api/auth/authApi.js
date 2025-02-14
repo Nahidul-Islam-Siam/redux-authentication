@@ -1,16 +1,17 @@
-import baseApi from "../baseApi";
+import { createApi, fetchBaseQuery } from '@reduxjs/toolkit/query/react';
 
-const BASE_URL = '/auth';
-
-const authApi = baseApi.injectEndpoints({
+export const authApi = createApi({
+    reducerPath: 'authApi',
+    baseQuery: fetchBaseQuery({ 
+        baseUrl: 'https://outlet-appointment-booking.onrender.com/v1',
+    }),
     endpoints: (builder) => ({
         signup: builder.mutation({
-            query: (userData) => ({
-                url: `/user/create`,
-                method: "POST",
-                body: userData,
-                credentials: "omit"
-            })
+            query: (credentials) => ({
+                url: '/signup',  
+                method: 'POST',
+                body: credentials,
+            }),
         }),
         login: builder.mutation({
             query: (credentials) => ({
@@ -65,7 +66,7 @@ const authApi = baseApi.injectEndpoints({
             }),
         }),
     }),
-})
+});
 
 export const { 
     useSignupMutation,
@@ -77,4 +78,3 @@ export const {
     useForgotPasswordMutation,
     useResetPasswordMutation
 } = authApi;
-export default authApi;

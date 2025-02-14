@@ -4,7 +4,8 @@ import { IoEyeOffOutline, IoEyeOutline } from "react-icons/io5";
 import { Link, useNavigate } from "react-router-dom";
 
 import { toast } from "react-toastify";
-import { useSingupMutation } from "../redux/api/auth/authApi";
+import { useSignupMutation } from "../redux/api/auth/authApi";
+
 
 
 const SignUpForm = () => {
@@ -12,7 +13,7 @@ const SignUpForm = () => {
     const [showPassword, setShowPassword] = useState(false);
     const [showConfirmPassword, setShowConfirmPassword] = useState(false);
 
-    const [singup, { isLoading, error }] = useSingupMutation();
+    const [singup, { isLoading, error }] =  useSignupMutation();
 
     const {
         register,
